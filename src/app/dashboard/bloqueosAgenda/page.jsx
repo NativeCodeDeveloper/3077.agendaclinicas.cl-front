@@ -180,7 +180,11 @@ export default function BloqueosAgendas() {
     }
 
     async function insertarBloqueosMultiples() {
-        if (!id_profesional || !horaInicio || !horaFinalizacion || !motivo || diasSeleccionados.length === 0) {
+        if (!id_profesional) {
+            return toast.error("Debes seleccionar un profesional.");
+        }
+
+        if (!horaInicio || !horaFinalizacion || !motivo || diasSeleccionados.length === 0) {
             return toast.error("Completa todos los campos y selecciona al menos un día.");
         }
 
@@ -646,7 +650,11 @@ export default function BloqueosAgendas() {
                                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                                             </svg>
                                                         </div>
-                                                        <p className="text-sm font-medium text-slate-400">No hay bloqueos registrados</p>
+                                                        <p className="text-sm font-medium text-slate-400">
+                                                            {id_profesional
+                                                                ? "No hay bloqueos registrados"
+                                                                : "Selecciona un profesional para ver sus bloqueos"}
+                                                        </p>
                                                     </div>
                                                 </TableCell>
                                             </TableRow>

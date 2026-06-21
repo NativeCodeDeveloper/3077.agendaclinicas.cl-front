@@ -237,7 +237,7 @@ export default function CortexAssistant() {
             aria-label="Abrir CORTEX A.I"
             aria-expanded={isOpen}
             aria-controls="cortex-assistant-dialog"
-            className="pointer-events-auto rounded-full border border-slate-200 bg-white p-1.5 shadow-[0_10px_28px_-12px_rgba(15,23,42,0.35)] transition hover:scale-105 hover:border-slate-300 hover:shadow-md focus:outline-none focus:ring-4 focus:ring-slate-200"
+            className="cortex-orbit-button pointer-events-auto rounded-full border border-violet-300/80 bg-white p-1.5 shadow-[0_10px_28px_-12px_rgba(76,29,149,0.42)] transition hover:scale-105 hover:border-violet-400 focus:outline-none focus:ring-4 focus:ring-violet-200/70"
           >
             <span className="relative block h-12 w-12 overflow-hidden rounded-full bg-white">
               <img
