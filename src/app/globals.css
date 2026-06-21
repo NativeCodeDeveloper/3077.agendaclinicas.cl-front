@@ -228,50 +228,15 @@ html {
   }
 }
 
-@keyframes cortex-orbit {
+@keyframes cortex-orb-spin {
   to {
     transform: rotate(1turn);
   }
 }
 
-.cortex-orbit-button {
-  isolation: isolate;
-  position: relative;
-}
-
-.cortex-orbit-button::before,
-.cortex-orbit-button::after {
-  content: "";
-  position: absolute;
-  border-radius: 9999px;
-  pointer-events: none;
-  z-index: -1;
-}
-
-.cortex-orbit-button::before {
-  inset: -1px;
-  background: conic-gradient(
-    from 0deg,
-    transparent 0deg 250deg,
-    rgba(139, 92, 246, 0.18) 280deg,
-    #7c3aed 320deg,
-    #c4b5fd 344deg,
-    transparent 360deg
-  );
-  animation: cortex-orbit 4.8s linear infinite;
-}
-
-.cortex-orbit-button::after {
-  inset: -2px;
-  background: conic-gradient(
-    from 0deg,
-    transparent 0deg 270deg,
-    rgba(124, 58, 237, 0.48) 325deg,
-    transparent 360deg
-  );
-  filter: blur(2px);
-  opacity: 0.25;
-  animation: cortex-orbit 4.8s linear infinite;
+.cortex-orb-motion {
+  animation: cortex-orb-spin 12s linear infinite;
+  will-change: transform;
 }
 
 /* MICRO ANIMATIONS FOR MINIMALIST ICONS */
