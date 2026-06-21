@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import { SelectDinamic } from "@/Componentes/SelectDinamic";
 import { InputTextDinamic } from "@/Componentes/InputTextDinamic";
 import { Calendar } from "@/components/ui/calendar";
+import { TimePicker } from "@/components/ui/TimePicker";
 import { es } from "date-fns/locale";
 import { format, eachDayOfInterval } from "date-fns";
 import ToasterClient from "@/Componentes/ToasterClient";
@@ -490,20 +491,18 @@ export default function BloqueosAgendas() {
                                     <div className="grid grid-cols-2 gap-3">
                                         <div className="space-y-1">
                                             <label className="text-[10px] text-slate-400 font-medium ml-1">Desde</label>
-                                            <input
-                                                type="time"
+                                            <TimePicker
                                                 value={horaInicio}
-                                                onChange={(e) => setHoraInicio(e.target.value)}
-                                                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-[13px] font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#6E56CF]/30 focus:border-[#6E56CF] transition-all"
+                                                onChange={setHoraInicio}
+                                                placeholder="00:00"
                                             />
                                         </div>
                                         <div className="space-y-1">
                                             <label className="text-[10px] text-slate-400 font-medium ml-1">Hasta</label>
-                                            <input
-                                                type="time"
+                                            <TimePicker
                                                 value={horaFinalizacion}
-                                                onChange={(e) => setHoraFinalizacion(e.target.value)}
-                                                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-[13px] font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#6E56CF]/30 focus:border-[#6E56CF] transition-all"
+                                                onChange={setHoraFinalizacion}
+                                                placeholder="00:00"
                                             />
                                         </div>
                                     </div>
