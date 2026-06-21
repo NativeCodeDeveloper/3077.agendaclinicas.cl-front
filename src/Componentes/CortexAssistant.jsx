@@ -1,26 +1,22 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 import { Send, X } from "lucide-react";
 
-const evolutionFrames = [
-  "/1.png",
-  "/2.png",
-  "/3.png",
-  "/4.png",
-  "/5.png",
-  "/6.png",
-  "/7.png",
-  "/9.png",
-  "/10.png",
-];
+const InteractiveNebulaOrb = dynamic(
+  () => import("@/components/ui/InteractiveNebulaOrb").then((module) => module.InteractiveNebulaOrb),
+  {
+    ssr: false,
+    loading: () => <span className="block h-full w-full rounded-full bg-transparent" />,
+  },
+);
 
 export default function CortexAssistant() {
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [mockConversation, setMockConversation] = useState([]);
   const [isEvolving, setIsEvolving] = useState(false);
-  const [logoFrameIndex, setLogoFrameIndex] = useState(0);
   const inputRef = useRef(null);
   const conversationEndRef = useRef(null);
 
@@ -43,34 +39,19 @@ export default function CortexAssistant() {
   useEffect(() => {
     if (!isEvolving) return undefined;
 
-    let currentFrame = 0;
-    let responseTimer;
-    setLogoFrameIndex(currentFrame);
-
-    const evolutionTimer = window.setInterval(() => {
-      currentFrame += 1;
-
-      if (currentFrame >= evolutionFrames.length) {
-        window.clearInterval(evolutionTimer);
-        responseTimer = window.setTimeout(() => {
-          setMockConversation((current) => [
-            ...current,
-            {
-              role: "cortex",
-              type: "capabilities",
-            },
-          ]);
-          setIsEvolving(false);
-          inputRef.current?.focus();
-        }, 180);
-        return;
-      }
-
-      setLogoFrameIndex(currentFrame);
-    }, 95);
+    const responseTimer = window.setTimeout(() => {
+      setMockConversation((current) => [
+        ...current,
+        {
+          role: "cortex",
+          type: "capabilities",
+        },
+      ]);
+      setIsEvolving(false);
+      inputRef.current?.focus();
+    }, 1200);
 
     return () => {
-      window.clearInterval(evolutionTimer);
       window.clearTimeout(responseTimer);
     };
   }, [isEvolving]);
@@ -102,32 +83,11 @@ export default function CortexAssistant() {
           >
             <header className="flex items-center justify-between border-b border-slate-100 px-4 py-3.5">
               <div className="flex items-center gap-3">
-                <div className="relative h-14 w-14 overflow-hidden rounded-2xl bg-white">
-                  <img
-                    src="/cortex_logo.png"
-                    alt="Logo de CORTEX A.I"
-                    className={`absolute inset-0 h-full w-full scale-125 rounded-xl object-cover transition-opacity duration-200 ease-linear ${
-                      isEvolving ? "opacity-0" : "opacity-100"
-                    }`}
+                <div className="relative h-14 w-14 overflow-hidden rounded-2xl bg-transparent">
+                  <InteractiveNebulaOrb
+                    isThinking={isEvolving}
+                    className="absolute inset-0 h-full w-full rounded-full"
                   />
-
-                  {evolutionFrames.map((frame, index) => {
-                    const isActiveFrame = isEvolving && index === logoFrameIndex;
-
-                    return (
-                      <img
-                        key={frame}
-                        src={frame}
-                        alt=""
-                        aria-hidden="true"
-                        className={`absolute inset-0 h-full w-full scale-125 rounded-xl object-cover transition-opacity duration-200 ease-linear ${
-                          isActiveFrame
-                            ? "z-10 opacity-100"
-                            : "z-0 opacity-0"
-                        }`}
-                      />
-                    );
-                  })}
                 </div>
                 <div>
                   <h2 id="cortex-assistant-title" className="text-[13px] font-bold tracking-[0.08em] text-slate-900">
@@ -186,10 +146,10 @@ export default function CortexAssistant() {
                 </div>
               ))}
               {isEvolving && (
-                <div className="flex w-fit items-center gap-1.5 rounded-2xl rounded-tl-sm border border-slate-200 bg-white px-4 py-3 shadow-sm">
-                  <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-slate-400 [animation-delay:-0.3s]" />
-                  <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-slate-400 [animation-delay:-0.15s]" />
-                  <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-slate-400" />
+                <div className="w-fit rounded-2xl rounded-tl-sm border border-cyan-100 bg-white px-4 py-3 shadow-sm">
+                  <span className="animate-pulse text-[12px] font-medium tracking-wide text-cyan-700">
+                    Pensando...
+                  </span>
                 </div>
               )}
               <div ref={conversationEndRef} />
@@ -198,7 +158,9 @@ export default function CortexAssistant() {
             <footer className="border-t border-slate-100 bg-white p-3">
               <form
                 onSubmit={handleSubmit}
-                className="flex items-end gap-2 rounded-xl border border-slate-200 bg-white p-1.5 pl-3 transition focus-within:border-slate-400"
+                className={`cortex-input-aura relative isolate flex items-end gap-2 rounded-xl border border-transparent bg-white p-1.5 pl-3 shadow-sm transition ${
+                  isEvolving ? "is-thinking" : ""
+                }`}
               >
                 <textarea
                   ref={inputRef}
@@ -237,15 +199,10 @@ export default function CortexAssistant() {
             aria-label="Abrir CORTEX A.I"
             aria-expanded={isOpen}
             aria-controls="cortex-assistant-dialog"
-            className="cortex-orbit-button pointer-events-auto rounded-full border border-violet-300/80 bg-white p-1.5 shadow-[0_10px_28px_-12px_rgba(76,29,149,0.42)] transition hover:scale-105 hover:border-violet-400 focus:outline-none focus:ring-4 focus:ring-violet-200/70"
+            className="pointer-events-auto rounded-full bg-transparent p-0 shadow-none transition hover:scale-105 focus:outline-none focus:ring-4 focus:ring-violet-200/60"
           >
-            <span className="relative block h-12 w-12 overflow-hidden rounded-full bg-white">
-              <img
-                src="/cortex_logo.png"
-                alt=""
-                aria-hidden="true"
-                className="h-full w-full rounded-full object-cover"
-              />
+            <span className="relative block h-16 w-16 overflow-hidden rounded-full bg-transparent">
+              <InteractiveNebulaOrb className="h-full w-full" />
             </span>
           </button>
         )}

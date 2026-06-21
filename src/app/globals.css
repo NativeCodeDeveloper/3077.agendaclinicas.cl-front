@@ -228,50 +228,59 @@ html {
   }
 }
 
-@keyframes cortex-orbit {
+@property --cortex-input-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes cortex-input-aura-rotate {
   to {
-    transform: rotate(1turn);
+    --cortex-input-angle: 360deg;
   }
 }
 
-.cortex-orbit-button {
-  isolation: isolate;
-  position: relative;
-}
-
-.cortex-orbit-button::before,
-.cortex-orbit-button::after {
+.cortex-input-aura::before {
   content: "";
   position: absolute;
-  border-radius: 9999px;
-  pointer-events: none;
-  z-index: -1;
-}
-
-.cortex-orbit-button::before {
   inset: -1px;
+  z-index: 2;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
   background: conic-gradient(
-    from 0deg,
-    transparent 0deg 250deg,
-    rgba(139, 92, 246, 0.18) 280deg,
-    #7c3aed 320deg,
-    #c4b5fd 344deg,
+    from var(--cortex-input-angle),
+    transparent 0deg 55deg,
+    rgba(34, 211, 238, 0.72) 82deg,
+    rgba(64, 47, 181, 0.82) 132deg,
+    transparent 174deg 224deg,
+    rgba(207, 48, 170, 0.72) 270deg,
+    rgba(124, 58, 237, 0.82) 316deg,
     transparent 360deg
   );
-  animation: cortex-orbit 4.8s linear infinite;
+  filter: drop-shadow(0 0 3px rgba(124, 58, 237, 0.16));
+  opacity: 0.48;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: cortex-input-aura-rotate 8s linear infinite;
+  transition: opacity 300ms ease, filter 300ms ease;
 }
 
-.cortex-orbit-button::after {
-  inset: -2px;
-  background: conic-gradient(
-    from 0deg,
-    transparent 0deg 270deg,
-    rgba(124, 58, 237, 0.48) 325deg,
-    transparent 360deg
-  );
-  filter: blur(2px);
-  opacity: 0.25;
-  animation: cortex-orbit 4.8s linear infinite;
+.cortex-input-aura:hover::before {
+  opacity: 0.62;
+}
+
+.cortex-input-aura:focus-within::before {
+  opacity: 0.9;
+  filter: drop-shadow(0 0 4px rgba(124, 58, 237, 0.24));
+  animation-duration: 3.6s;
+}
+
+.cortex-input-aura.is-thinking::before {
+  opacity: 0.82;
+  filter: drop-shadow(0 0 4px rgba(34, 211, 238, 0.24));
+  animation-duration: 2.8s;
 }
 
 /* MICRO ANIMATIONS FOR MINIMALIST ICONS */
