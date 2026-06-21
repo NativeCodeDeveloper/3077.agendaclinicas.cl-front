@@ -104,9 +104,9 @@ export default function CortexAssistant() {
               <div className="flex items-center gap-3">
                 <div className="relative h-14 w-14 overflow-hidden rounded-2xl bg-white">
                   <img
-                    src="/cortex_orb.png"
-                    alt="Orbe de CORTEX A.I"
-                    className={`cortex-orb-motion absolute inset-0 h-full w-full rounded-full object-cover transition-opacity duration-200 ease-linear ${
+                    src="/cortex_logo.png"
+                    alt="Logo de CORTEX A.I"
+                    className={`absolute inset-0 h-full w-full scale-125 rounded-xl object-cover transition-opacity duration-200 ease-linear ${
                       isEvolving ? "opacity-0" : "opacity-100"
                     }`}
                   />
@@ -237,14 +237,14 @@ export default function CortexAssistant() {
             aria-label="Abrir CORTEX A.I"
             aria-expanded={isOpen}
             aria-controls="cortex-assistant-dialog"
-            className="pointer-events-auto rounded-full bg-transparent p-0 drop-shadow-[0_8px_14px_rgba(109,40,217,0.22)] transition hover:scale-105 focus:outline-none focus:ring-4 focus:ring-violet-200/70"
+            className="cortex-orbit-button pointer-events-auto rounded-full border border-violet-300/80 bg-white p-1.5 shadow-[0_10px_28px_-12px_rgba(76,29,149,0.42)] transition hover:scale-105 hover:border-violet-400 focus:outline-none focus:ring-4 focus:ring-violet-200/70"
           >
             <span className="relative block h-12 w-12 overflow-hidden rounded-full bg-white">
               <img
-                src="/cortex_orb.png"
+                src="/cortex_logo.png"
                 alt=""
                 aria-hidden="true"
-                className="cortex-orb-motion h-full w-full rounded-full object-cover"
+                className="h-full w-full rounded-full object-cover"
               />
             </span>
           </button>
