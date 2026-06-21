@@ -104,9 +104,9 @@ export default function CortexAssistant() {
               <div className="flex items-center gap-3">
                 <div className="relative h-14 w-14 overflow-hidden rounded-2xl bg-white">
                   <img
-                    src="/cortex_logo.png"
-                    alt="Logo de CORTEX A.I"
-                    className={`absolute inset-0 h-full w-full scale-125 rounded-xl object-cover transition-opacity duration-200 ease-linear ${
+                    src="/cortex_orb.png"
+                    alt="Orbe de CORTEX A.I"
+                    className={`absolute inset-0 h-full w-full rounded-full object-cover transition-opacity duration-200 ease-linear ${
                       isEvolving ? "opacity-0" : "opacity-100"
                     }`}
                   />
@@ -241,7 +241,7 @@ export default function CortexAssistant() {
           >
             <span className="relative block h-12 w-12 overflow-hidden rounded-full bg-white">
               <img
-                src="/cortex_logo.png"
+                src="/cortex_orb.png"
                 alt=""
                 aria-hidden="true"
                 className="h-full w-full rounded-full object-cover"
