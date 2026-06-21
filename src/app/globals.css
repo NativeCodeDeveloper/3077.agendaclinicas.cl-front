@@ -249,7 +249,7 @@ html {
 }
 
 .cortex-orbit-button::before {
-  inset: -2px;
+  inset: -1px;
   background: conic-gradient(
     from 0deg,
     transparent 0deg 250deg,
@@ -262,15 +262,15 @@ html {
 }
 
 .cortex-orbit-button::after {
-  inset: -3px;
+  inset: -2px;
   background: conic-gradient(
     from 0deg,
     transparent 0deg 270deg,
     rgba(124, 58, 237, 0.48) 325deg,
     transparent 360deg
   );
-  filter: blur(3px);
-  opacity: 0.38;
+  filter: blur(2px);
+  opacity: 0.25;
   animation: cortex-orbit 4.8s linear infinite;
 }
 
