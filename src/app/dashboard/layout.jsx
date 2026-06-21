@@ -9,6 +9,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { Michroma } from "next/font/google";
 import MobileNav from "./MobileNav";
 import SidebarNav from "./SidebarNav";
+import NotificationProvider from "@/components/NotificationProvider";
 
 const michroma = Michroma({ weight: "400", subsets: ["latin"], display: "swap" });
 
@@ -195,6 +196,7 @@ export default function DashboardLayout({ children }) {
 
                 </div>
             </div>
+            <NotificationProvider />
         </ClerkProvider>
     );
 }

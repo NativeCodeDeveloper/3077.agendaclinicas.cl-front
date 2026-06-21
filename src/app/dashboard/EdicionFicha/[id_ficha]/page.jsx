@@ -299,25 +299,23 @@ export default function EdicionFichaClinica() {
     }, [])
 
     return (
-        <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(99,102,241,0.14),_transparent_32%),radial-gradient(circle_at_right,_rgba(6,182,212,0.12),_transparent_28%),linear-gradient(180deg,_#f1f5f9_0%,_#f8fafc_55%,_#f1f5f9_100%)]">
+        <div className="min-h-screen bg-[#FAFAFB] flex flex-col">
             <ToasterClient/>
 
-            <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10">
+            <div className="flex-1 mx-auto w-full max-w-5xl px-4 py-6 md:px-8 md:py-10">
 
-                {/* Header */}
-                <div className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                {/* ── Header ── */}
+                <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                     <div>
-                        <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-indigo-700 mb-1">Modificar registro</p>
-                        <h1 className="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight">
-                            Edici&oacute;n de Ficha Cl&iacute;nica
-                        </h1>
+                        <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-[#6E56CF]">Modificar registro</p>
+                        <h1 className="mt-1 text-2xl font-bold tracking-tight text-slate-900 md:text-3xl">Edición de Ficha Clínica</h1>
                     </div>
                     <div className="flex items-center gap-2">
                         {dataFicha.map((ficha) => (
                             <button
                                 key={ficha.id_paciente ?? ficha.id_ficha}
                                 onClick={() => retroceder(ficha.id_paciente)}
-                                className="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-semibold text-slate-700 bg-slate-100 border border-slate-300 rounded-xl hover:bg-slate-200 hover:border-slate-400 transition-all duration-150 shadow-sm">
+                                className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-50 transition-all active:scale-[0.98]">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
                                 </svg>
@@ -327,29 +325,30 @@ export default function EdicionFichaClinica() {
                     </div>
                 </div>
 
-                {/* Datos actuales de la ficha */}
+                {/* ── Datos actuales de la ficha ── */}
                 {dataFicha.map((ficha) => (
-                    <div key={ficha.id_ficha} className="mb-8 bg-white border border-slate-300 rounded-[24px] shadow-[0_18px_50px_rgba(15,23,42,0.12)] overflow-hidden">
-                        <div className="bg-[linear-gradient(135deg,#0f172a_0%,#312e81_58%,#0891b2_100%)] px-5 md:px-6 py-3.5 flex items-center justify-between">
+                    <div key={ficha.id_ficha} className="mb-6 bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+                        <div className="px-6 py-5 border-b border-slate-100 flex items-center justify-between">
                             <div className="flex items-center gap-3">
-                                <div className="flex items-center justify-center h-8 w-8 rounded-lg bg-white/20 backdrop-blur-sm">
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                <div className="h-10 w-10 rounded-xl bg-violet-50 flex items-center justify-center text-[#6E56CF]">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                                     </svg>
                                 </div>
-                                <h2 className="text-sm font-semibold text-white tracking-wide uppercase">
-                                    Datos Actuales &mdash; Ficha #{ficha.id_ficha}
-                                </h2>
+                                <div>
+                                    <h2 className="text-base font-bold text-slate-800">Datos Actuales</h2>
+                                    <p className="text-[11px] text-slate-400 font-medium">Ficha #{ficha.id_ficha}</p>
+                                </div>
                             </div>
-                            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white shadow-sm border border-slate-200">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-violet-50 border border-violet-100 text-[12px] font-bold text-[#6E56CF]">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                                 </svg>
-                                <span className="text-base font-bold text-indigo-700">{formatearFecha(ficha.fechaConsulta)}</span>
+                                {formatearFecha(ficha.fechaConsulta)}
                             </span>
                         </div>
 
-                        <div className="p-5 md:p-6">
+                        <div className="p-6">
                             {(() => {
                                 const datos = parsearDatosDinamicos(ficha.datosDinamicos)
                                 const plantillaNombre = datos?._plantillaNombre
@@ -357,16 +356,16 @@ export default function EdicionFichaClinica() {
                                     <>
                                         <div className="flex flex-wrap items-center gap-2 mb-5">
                                             {plantillaNombre ? (
-                                                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-indigo-100 border border-indigo-200 text-xs font-medium text-indigo-800">
-                                                    <span className="text-indigo-500">Plantilla:</span> {plantillaNombre}
+                                                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-violet-50 border border-violet-100 text-[11px] font-semibold text-[#6E56CF]">
+                                                    <span className="text-slate-400 font-medium">Plantilla:</span> {plantillaNombre}
                                                 </span>
                                             ) : (
-                                                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-indigo-100 border border-indigo-200 text-xs font-medium text-indigo-800">
-                                                    <span className="text-indigo-500">Motivo Consulta:</span> {ficha.tipoAtencion || '-'}
+                                                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-violet-50 border border-violet-100 text-[11px] font-semibold text-[#6E56CF]">
+                                                    <span className="text-slate-400 font-medium">Motivo:</span> {ficha.tipoAtencion || '-'}
                                                 </span>
                                             )}
-                                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-teal-100 border border-teal-200 text-xs font-medium text-teal-800">
-                                                <span className="text-teal-500">Profesional:</span> {ficha.observaciones || '-'}
+                                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-100 border border-slate-200 text-[11px] font-semibold text-slate-600">
+                                                <span className="text-slate-400 font-medium">Profesional:</span> {ficha.observaciones || '-'}
                                             </span>
                                         </div>
 
@@ -374,12 +373,12 @@ export default function EdicionFichaClinica() {
                                             <div className="space-y-4">
                                                 {agruparPorCategoria(datos).map(categoria => (
                                                     <div key={categoria.nombre}>
-                                                        <p className="text-[11px] font-semibold text-indigo-700 uppercase tracking-wider mb-2">{categoria.nombre}</p>
+                                                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">{categoria.nombre}</p>
                                                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                                             {categoria.campos.map((campo, idx) => (
-                                                                <div key={idx} className="flex flex-col gap-0.5 px-3 py-2.5 bg-slate-100/80 rounded-lg border border-slate-200">
-                                                                    <span className="text-[11px] font-medium text-slate-400 uppercase tracking-wider">{campo.nombre}</span>
-                                                                    <span className="text-sm font-medium text-slate-700 whitespace-pre-line">{campo.valor}</span>
+                                                                <div key={idx} className="flex flex-col gap-0.5 px-4 py-3 bg-slate-50 rounded-2xl border border-slate-100">
+                                                                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{campo.nombre}</span>
+                                                                    <span className="text-[13px] font-medium text-slate-700 whitespace-pre-line">{campo.valor}</span>
                                                                 </div>
                                                             ))}
                                                         </div>
@@ -387,7 +386,7 @@ export default function EdicionFichaClinica() {
                                                 ))}
                                             </div>
                                         ) : (
-                                            <p className="text-sm text-slate-400">Ficha sin plantilla asociada.</p>
+                                            <p className="text-[13px] text-slate-400">Ficha sin plantilla asociada.</p>
                                         )}
                                     </>
                                 )
@@ -396,26 +395,32 @@ export default function EdicionFichaClinica() {
                     </div>
                 ))}
 
-                {/* Formulario de edici&oacute;n */}
-                <div className="bg-white border border-slate-300 rounded-[24px] shadow-[0_18px_50px_rgba(15,23,42,0.12)] overflow-hidden">
+                {/* ── Formulario de edición ── */}
+                <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
 
-                    <div className="border-b border-slate-200 bg-slate-100/80 px-5 py-3">
-                        <h2 className="text-sm font-semibold text-slate-800 tracking-wide uppercase">
-                            Actualizar Informaci&oacute;n
-                        </h2>
+                    <div className="px-6 py-5 border-b border-slate-100 flex items-center gap-3">
+                        <div className="h-10 w-10 rounded-xl bg-amber-50 flex items-center justify-center text-amber-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 className="text-base font-bold text-slate-800">Actualizar Información</h2>
+                            <p className="text-[11px] text-slate-400 font-medium">Selecciona plantilla y completa los campos</p>
+                        </div>
                     </div>
 
-                    <div className="p-5 md:p-6 space-y-5">
+                    <div className="p-6 space-y-5">
 
                         {/* Selector de Plantilla */}
-                        <div>
-                            <label className="block text-sm font-medium text-slate-700 mb-1.5">
-                                Plantilla de Ficha <span className="text-red-500">*</span>
+                        <div className="space-y-2">
+                            <label className="text-[11px] font-bold text-slate-500 uppercase tracking-wider ml-1">
+                                Plantilla de Ficha <span className="text-rose-400">*</span>
                             </label>
                             <select
                                 value={idPlantilla || ""}
                                 onChange={(e) => seleccionarPlantilla(e.target.value)}
-                                className="w-full h-10 px-3.5 text-sm border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400 transition-all text-slate-700"
+                                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-[13px] font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#6E56CF]/30 focus:border-[#6E56CF] transition-all"
                             >
                                 <option value="">Seleccione una plantilla...</option>
                                 {plantillas.map((p) => (
@@ -426,22 +431,16 @@ export default function EdicionFichaClinica() {
 
                         {/* Fecha + Profesional */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                            <div>
-                                <label className="block text-sm font-medium text-slate-700 mb-1.5">
-                                    Fecha de Consulta
-                                </label>
+                            <div className="space-y-2">
+                                <label className="text-[11px] font-bold text-slate-500 uppercase tracking-wider ml-1">Fecha de Consulta</label>
                                 <ShadcnDatePicker
-                                    className="border-slate-300 focus:border-indigo-500"
                                     label=""
                                     value={fechaConsulta}
                                     onChange={(fecha) => setFechaConsulta(fecha)}
                                 />
                             </div>
-                            <div>
-                                <label className="block text-sm font-medium text-slate-700 mb-1.5">
-                                    Profesional
-                                </label>
-                                <p className="text-xs text-slate-400 mb-2">Profesional a cargo de la atenci&oacute;n</p>
+                            <div className="space-y-2">
+                                <label className="text-[11px] font-bold text-slate-500 uppercase tracking-wider ml-1">Profesional</label>
                                 <ShadcnInput
                                     value={observaciones}
                                     placeholder="Ej: Dra. Andrea Moran"
@@ -451,24 +450,23 @@ export default function EdicionFichaClinica() {
                         </div>
                     </div>
 
-                    {/* Campos din&aacute;micos de la plantilla */}
+                    {/* Campos dinámicos de la plantilla */}
                     {idPlantilla && plantillaCompleta && plantillaCompleta.categorias.map(categoria => (
                         <div key={categoria.id_categoria}>
-                            <div className="border-t border-b border-slate-200 bg-slate-100/80 px-5 py-3">
-                                <h2 className="text-sm font-semibold text-slate-800 tracking-wide uppercase">
-                                    {categoria.nombre}
-                                </h2>
+                            <div className="px-6 py-3 border-t border-slate-100 bg-slate-50/60 flex items-center gap-2">
+                                <div className="h-1.5 w-1.5 rounded-full bg-[#6E56CF]" />
+                                <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">{categoria.nombre}</span>
                             </div>
 
-                            <div className="p-5 md:p-6 space-y-5">
+                            <div className="p-6 space-y-5">
                                 {categoria.campos.map(campo => (
-                                    <div key={campo.id_campo}>
-                                        <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                                    <div key={campo.id_campo} className="space-y-2">
+                                        <label className="text-[11px] font-bold text-slate-500 uppercase tracking-wider ml-1">
                                             {campo.nombre}
-                                            {campo.requerido === 1 && <span className="text-red-500 ml-1">*</span>}
+                                            {campo.requerido === 1 && <span className="text-rose-400 ml-1">*</span>}
                                         </label>
                                         <Textarea
-                                            className="min-h-[100px] resize-y border-slate-300 focus:border-indigo-500 focus:ring-indigo-500/20"
+                                            className="min-h-[100px] resize-y rounded-xl border-slate-200 focus:border-[#6E56CF] focus:ring-[#6E56CF]/20 text-[13px]"
                                             value={datosDinamicos[campo.id_campo] || ""}
                                             onChange={(e) => setDatosDinamicos(prev => ({
                                                 ...prev,
@@ -485,87 +483,71 @@ export default function EdicionFichaClinica() {
                     {/* Formulario legacy (fichas sin plantilla) */}
                     {!idPlantilla && (
                         <>
-                            <div className="p-5 md:p-6 space-y-5">
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                                    <div>
-                                        <label className="block text-sm font-medium text-slate-700 mb-1.5">
-                                            Motivo de Consulta
-                                        </label>
-                                        <p className="text-xs text-slate-400 mb-2">Tipo de atenci&oacute;n realizada</p>
-                                        <ShadcnInput
-                                            value={tipoAtencion}
-                                            placeholder="Ej: Seguimiento, Tratamiento, Evaluaci&oacute;n..."
-                                            onChange={e => settipoAtencion(e.target.value)}
-                                        />
-                                    </div>
+                            <div className="p-6 space-y-5">
+                                <div className="space-y-2">
+                                    <label className="text-[11px] font-bold text-slate-500 uppercase tracking-wider ml-1">Motivo de Consulta</label>
+                                    <ShadcnInput
+                                        value={tipoAtencion}
+                                        placeholder="Ej: Seguimiento, Tratamiento, Evaluación..."
+                                        onChange={e => settipoAtencion(e.target.value)}
+                                    />
                                 </div>
                             </div>
 
-                            <div className="border-t border-b border-slate-200 bg-slate-100/80 px-5 py-3">
-                                <h2 className="text-sm font-semibold text-slate-800 tracking-wide uppercase">
-                                    Diagn&oacute;stico e Indicaciones
-                                </h2>
+                            <div className="px-6 py-3 border-t border-slate-100 bg-slate-50/60 flex items-center gap-2">
+                                <div className="h-1.5 w-1.5 rounded-full bg-[#6E56CF]" />
+                                <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Diagnóstico e Indicaciones</span>
                             </div>
 
-                            <div className="p-5 md:p-6 space-y-5">
-                                <div>
-                                    <label className="block text-sm font-medium text-slate-700 mb-1.5">
-                                        Diagn&oacute;stico
-                                    </label>
-                                    <p className="text-xs text-slate-400 mb-2">Diagn&oacute;stico cl&iacute;nico del paciente</p>
+                            <div className="p-6 space-y-5">
+                                <div className="space-y-2">
+                                    <label className="text-[11px] font-bold text-slate-500 uppercase tracking-wider ml-1">Diagnóstico</label>
                                     <ShadcnInput
                                         value={diagnostico}
-                                        placeholder="Ej: Caries dental activa en molar 3.6 (lesi&oacute;n oclusal)"
+                                        placeholder="Ej: Caries dental activa en molar 3.6 (lesión oclusal)"
                                         onChange={e => setDiagnostico(e.target.value)}
                                     />
                                 </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-slate-700 mb-1.5">
-                                        Indicaciones
-                                    </label>
-                                    <p className="text-xs text-slate-400 mb-2">Indicaciones post-atenci&oacute;n para el paciente</p>
+                                <div className="space-y-2">
+                                    <label className="text-[11px] font-bold text-slate-500 uppercase tracking-wider ml-1">Indicaciones</label>
                                     <ShadcnInput
                                         value={indicaciones}
-                                        placeholder="Ej: Cepillado suave 3 veces al d&iacute;a + hilo dental nocturno"
+                                        placeholder="Ej: Cepillado suave 3 veces al día + hilo dental nocturno"
                                         onChange={e => setIndicaciones(e.target.value)}
                                     />
                                 </div>
                             </div>
 
-                            <div className="border-t border-b border-slate-200 bg-slate-100/80 px-5 py-3">
-                                <h2 className="text-sm font-semibold text-slate-800 tracking-wide uppercase">
-                                    Anotaciones Cl&iacute;nicas
-                                </h2>
+                            <div className="px-6 py-3 border-t border-slate-100 bg-slate-50/60 flex items-center gap-2">
+                                <div className="h-1.5 w-1.5 rounded-full bg-[#6E56CF]" />
+                                <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Anotaciones Clínicas</span>
                             </div>
 
-                            <div className="p-5 md:p-6">
-                                <p className="text-xs text-slate-400 mb-3">
-                                    Registra hallazgos, procedimiento realizado, materiales/medicaci&oacute;n indicada, evoluci&oacute;n y plan de control.
-                                </p>
+                            <div className="p-6">
                                 <Textarea
-                                    className="min-h-[140px] resize-none border-slate-300 focus:border-indigo-500 focus:ring-indigo-500/20"
+                                    className="min-h-[140px] resize-none rounded-xl border-slate-200 focus:border-[#6E56CF] focus:ring-[#6E56CF]/20 text-[13px]"
                                     value={anotacionConsulta}
                                     onChange={(e) => setanotacionConsulta(e.target.value)}
-                                    placeholder="Ej: Odontograma: 3.6 caries O; se realiza resina; anestesia local; se indican cuidados y control en 7 d&iacute;as."
+                                    placeholder="Ej: Odontograma: 3.6 caries O; se realiza resina; anestesia local; se indican cuidados y control en 7 días."
                                 />
                             </div>
                         </>
                     )}
                 </div>
 
-                {/* Botones de acci&oacute;n */}
-                <div className="mt-8 flex flex-col-reverse sm:flex-row justify-end gap-3">
+                {/* ── Botones de acción ── */}
+                <div className="mt-6 flex flex-col-reverse sm:flex-row justify-end gap-3">
                     {dataFicha.map((ficha) => (
                         <button
                             key={ficha.id_paciente ?? ficha.id_ficha}
                             onClick={() => retroceder(ficha.id_paciente)}
-                            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-xl hover:bg-slate-100 hover:border-slate-400 transition-all duration-150 shadow-sm">
+                            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-6 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-50 transition-all active:scale-[0.98]">
                             Cancelar
                         </button>
                     ))}
                     <button
                         onClick={() => actualizarFicha()}
-                        className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-indigo-700 to-teal-600 rounded-xl hover:from-indigo-800 hover:to-teal-700 transition-all duration-150 shadow-md hover:shadow-lg">
+                        className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-2xl bg-[#6E56CF] px-6 py-2.5 text-sm font-bold text-white hover:bg-[#5b45bc] shadow-lg shadow-indigo-200 transition-all active:scale-[0.98]">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>

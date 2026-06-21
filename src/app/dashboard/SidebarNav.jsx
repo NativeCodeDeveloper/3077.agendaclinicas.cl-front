@@ -271,17 +271,12 @@ export default function SidebarNav() {
     });
   }
 
+  if (!isLoaded) return null;
+
   return (
     <>
       <nav className="flex-1 overflow-y-auto px-2 py-3 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-        {!isLoaded ? (
-          <div className="space-y-2 px-2">
-            <div className="h-9 rounded-xl bg-slate-100 animate-pulse" />
-            <div className="h-9 rounded-xl bg-slate-100 animate-pulse" />
-            <div className="h-9 rounded-xl bg-slate-100 animate-pulse" />
-          </div>
-        ) : (
-          sections.map((section) => {
+        {sections.map((section) => {
             if (!section.accordionLabel) {
               return (
                 <div key={section.id}>
@@ -309,8 +304,7 @@ export default function SidebarNav() {
                 </NavAccordion>
               </div>
             );
-          })
-        )}
+          })}
       </nav>
 
       <UserMenu />
