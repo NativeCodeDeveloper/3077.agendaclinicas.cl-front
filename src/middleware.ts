@@ -6,8 +6,16 @@ const isDashboardRoute = createRouteMatcher(["/dashboard(.*)"]);
 const isDashboardApiRoute = createRouteMatcher(["/api/dashboard(.*)"]);
 const SUBSCRIPTION_CANCELLED_PATH = "/dashboard/suscripcion-cancelada";
 
+// Acceso abierto temporal solicitado para el dashboard.
+// Cambiar a `false` para restaurar el login y los permisos por rol de Clerk.
+const TEMPORARILY_DISABLE_DASHBOARD_AUTH = true;
+
 export default clerkMiddleware(async (auth, req) => {
   if (!isDashboardRoute(req) && !isDashboardApiRoute(req)) {
+    return NextResponse.next();
+  }
+
+  if (TEMPORARILY_DISABLE_DASHBOARD_AUTH && isDashboardRoute(req)) {
     return NextResponse.next();
   }
 

@@ -574,22 +574,26 @@ export default function CalendarioMensualHoras() {
                         <div className="mt-3 flex items-center justify-between">
                             <button
                                 className="rounded-lg border border-gray-900 bg-gray-900 px-2.5 py-1 text-xs font-semibold text-white shadow-md hover:bg-gray-800 active:scale-[0.98]"
-                                onClick={() => {
-                                    setMesActual(new Date(mesActual.setMonth(mesActual.getMonth() - 1)));
-                                    setFechaSeleccionada(null);
-                                    setHoraInicio(""); setHoraFin(""); setFechaInicio(""); setFechaFinalizacion("");
-                                }}
+                                 onClick={() => {
+                                     const nuevaFecha = new Date(mesActual);
+                                     nuevaFecha.setMonth(nuevaFecha.getMonth() - 1);
+                                     setMesActual(nuevaFecha);
+                                     setFechaSeleccionada(null);
+                                     setHoraInicio(""); setHoraFin(""); setFechaInicio(""); setFechaFinalizacion("");
+                                 }}
                             >←</button>
                             <strong className="capitalize text-sm font-semibold text-slate-800">
                                 {mesActual.toLocaleString("es-CL", {month: "long", year: "numeric"})}
                             </strong>
                             <button
                                 className="rounded-lg border border-gray-900 bg-gray-900 px-2.5 py-1 text-xs font-semibold text-white shadow-md hover:bg-gray-800 active:scale-[0.98]"
-                                onClick={() => {
-                                    setMesActual(new Date(mesActual.setMonth(mesActual.getMonth() + 1)));
-                                    setFechaSeleccionada(null);
-                                    setHoraInicio(""); setHoraFin(""); setFechaInicio(""); setFechaFinalizacion("");
-                                }}
+                                 onClick={() => {
+                                     const nuevaFecha = new Date(mesActual);
+                                     nuevaFecha.setMonth(nuevaFecha.getMonth() + 1);
+                                     setMesActual(nuevaFecha);
+                                     setFechaSeleccionada(null);
+                                     setHoraInicio(""); setHoraFin(""); setFechaInicio(""); setFechaFinalizacion("");
+                                 }}
                             >→</button>
                         </div>
 
