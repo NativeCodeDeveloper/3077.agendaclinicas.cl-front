@@ -242,11 +242,9 @@ export default function BloqueosAgendas() {
         if (exitosos > 0 && conflictoReserva === 0 && conflictoBloqueo === 0) {
             toast.success(`Se bloquearon ${exitosos} día(s) correctamente.`);
         } else if (exitosos > 0) {
-            toast.success(`${exitosos} día(s) bloqueados. ${conflictoReserva + conflictoBloqueo} con conflicto.`);
-        } else if (conflictoReserva > 0) {
-            toast.error("No se pudo bloquear: hay pacientes agendados en esos días.");
+            toast.success(`${exitosos} día(s) bloqueados. ${conflictoReserva + conflictoBloqueo} no se bloquearon por citas o bloqueos previos.`);
         } else {
-            toast.error("No se pudo bloquear ningún día. Verifica que no haya bloqueos previos.");
+            toast.error("Ya existe una cita agendada o un bloqueo previo en ese horario.");
         }
     }
 
