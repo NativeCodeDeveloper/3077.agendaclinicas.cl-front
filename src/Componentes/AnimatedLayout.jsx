@@ -5,14 +5,17 @@ import { motion, AnimatePresence } from "motion/react";
 import { usePathname } from "next/navigation";
 
 export function AnimatedLayout({ children }) {
-    // FIX: usePathname() funciona en SSR a diferencia de window.location.pathname
-    // Con window, la key siempre era "" en el server y las transiciones nunca funcionaban.
     const pathname = usePathname();
+
+    // Usamos solo el segmento raíz como key de animación.
+    // Así navegar dentro de /dashboard/* NO remonta el layout (ni el sidebar).
+    // La animación solo ocurre al cambiar de sección raíz (ej: / → /dashboard).
+    const rootSegment = "/" + pathname.split("/")[1];
 
     return (
         <AnimatePresence mode="wait">
             <motion.div
-                key={pathname}
+                key={rootSegment}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}

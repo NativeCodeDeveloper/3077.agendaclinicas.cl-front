@@ -10,6 +10,7 @@ import { Michroma } from "next/font/google";
 import MobileNav from "./MobileNav";
 import SidebarNav from "./SidebarNav";
 import NotificationProvider from "@/components/NotificationProvider";
+import DashboardPageTransition from "@/components/DashboardPageTransition";
 import CortexAssistant from "@/Componentes/CortexAssistant";
 
 const michroma = Michroma({ weight: "400", subsets: ["latin"], display: "swap" });
@@ -191,7 +192,9 @@ export default function DashboardLayout({ children }) {
                     <div className="flex-1 min-w-0 h-full overflow-y-auto">
                         <MobileNav />
                         <main className="min-w-0">
-                            {children}
+                            <DashboardPageTransition>
+                                {children}
+                            </DashboardPageTransition>
                         </main>
                     </div>
 
