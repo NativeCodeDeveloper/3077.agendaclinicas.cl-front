@@ -9,11 +9,8 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { Michroma } from "next/font/google";
 import MobileNav from "./MobileNav";
 import SidebarNav from "./SidebarNav";
-<<<<<<< HEAD
 import NotificationProvider from "@/components/NotificationProvider";
-=======
 import CortexAssistant from "@/Componentes/CortexAssistant";
->>>>>>> 83de4b0 (CORTEX AI)
 
 const michroma = Michroma({ weight: "400", subsets: ["latin"], display: "swap" });
 
