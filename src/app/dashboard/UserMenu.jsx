@@ -2,11 +2,30 @@
 
 import { useUser, useClerk } from "@clerk/nextjs";
 import Link from "next/link";
+import { useState, useEffect } from "react";
 import { getDashboardRoleFromUser, getDashboardRoleLabel } from "@/lib/dashboard-access";
 
 export default function UserMenu() {
     const { user, isLoaded } = useUser();
     const { signOut } = useClerk();
+    const [empresaNombre, setEmpresaNombre] = useState("");
+
+    useEffect(() => {
+        const API = process.env.NEXT_PUBLIC_API_URL;
+        if (!API) return;
+        fetch(`${API}/datosempresa/seleccionartodos`, {
+            method: "GET",
+            headers: { Accept: "application/json" },
+            mode: "cors",
+        })
+            .then(res => res.ok ? res.json() : null)
+            .then(data => {
+                if (!data) return;
+                const d = Array.isArray(data) ? data[0] : data;
+                if (d?.empresaNombre) setEmpresaNombre(d.empresaNombre);
+            })
+            .catch(() => {});
+    }, []);
 
     if (!isLoaded) {
         return (
@@ -66,6 +85,11 @@ export default function UserMenu() {
 
                     {/* Info */}
                     <div className="flex-1 min-w-0">
+                        {empresaNombre && (
+                            <p className="truncate text-[10px] font-semibold text-[#6E56CF] leading-tight uppercase tracking-wide">
+                                {empresaNombre}
+                            </p>
+                        )}
                         <p className="truncate text-[13px] font-semibold text-slate-800 leading-tight">
                             {name}
                         </p>

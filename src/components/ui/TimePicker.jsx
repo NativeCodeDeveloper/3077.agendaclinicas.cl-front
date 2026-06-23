@@ -1,13 +1,105 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
 
-const HORAS = Array.from({ length: 24 }, (_, i) => String(i).padStart(2, "0"))
+const HORAS = Array.from({ length: 18 }, (_, i) => String(i + 6).padStart(2, "0"))
 const MINUTOS = Array.from({ length: 60 }, (_, i) => String(i).padStart(2, "0"))
+
+function ScrollColumn({ items, selected, onSelect, dataAttr, scrollRef, label }) {
+    const [atTop, setAtTop] = useState(true)
+    const [atBottom, setAtBottom] = useState(false)
+
+    const checkScroll = useCallback(() => {
+        const el = scrollRef.current
+        if (!el) return
+        setAtTop(el.scrollTop <= 2)
+        setAtBottom(el.scrollTop + el.clientHeight >= el.scrollHeight - 2)
+    }, [scrollRef])
+
+    useEffect(() => {
+        const el = scrollRef.current
+        if (!el) return
+        checkScroll()
+        el.addEventListener("scroll", checkScroll, { passive: true })
+        return () => el.removeEventListener("scroll", checkScroll)
+    }, [checkScroll])
+
+    function scrollBy(amount) {
+        scrollRef.current?.scrollBy({ top: amount, behavior: "smooth" })
+    }
+
+    return (
+        <div className="flex flex-col">
+            {/* Flecha arriba */}
+            <button
+                type="button"
+                onClick={() => scrollBy(-87)}
+                disabled={atTop}
+                className={`w-full flex items-center justify-center py-1.5 transition-all border-b border-slate-100
+                    ${atTop ? "opacity-20 cursor-default" : "opacity-70 hover:opacity-100 hover:bg-violet-50"}`}
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
+                </svg>
+            </button>
+
+            {/* Lista scrolleable */}
+            <div className="relative">
+                <div
+                    ref={scrollRef}
+                    className="h-48 overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+                >
+                    <div className="py-1">
+                        {items.map(item => (
+                            <button
+                                key={item}
+                                type="button"
+                                {...{ [dataAttr]: item }}
+                                onClick={() => onSelect(item)}
+                                className={`w-full px-4 py-[7px] text-[13px] font-semibold text-center transition-all
+                                    ${selected === item
+                                        ? "bg-[#6E56CF] text-white"
+                                        : "text-slate-600 hover:bg-violet-50 hover:text-[#6E56CF]"
+                                    }`}
+                            >
+                                {item}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Gradiente superior */}
+                {!atTop && (
+                    <div className="pointer-events-none absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-white to-transparent" />
+                )}
+
+                {/* Gradiente inferior */}
+                {!atBottom && (
+                    <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-white to-transparent" />
+                )}
+            </div>
+
+            {/* Flecha abajo */}
+            <button
+                type="button"
+                onClick={() => scrollBy(87)}
+                disabled={atBottom}
+                className={`w-full flex items-center justify-center py-1.5 transition-all border-t border-slate-100
+                    ${atBottom ? "opacity-20 cursor-default" : "opacity-70 hover:opacity-100 hover:bg-violet-50"}`}
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+            </button>
+        </div>
+    )
+}
 
 export function TimePicker({ value = "", onChange, placeholder = "00:00", label = "" }) {
     const [open, setOpen] = useState(false)
+    const [openUp, setOpenUp] = useState(false)
     const containerRef = useRef(null)
+    const dropdownRef = useRef(null)
     const horasRef = useRef(null)
     const minutosRef = useRef(null)
 
@@ -21,6 +113,14 @@ export function TimePicker({ value = "", onChange, placeholder = "00:00", label 
         }
         document.addEventListener("mousedown", onClickOutside)
         return () => document.removeEventListener("mousedown", onClickOutside)
+    }, [open])
+
+    // Detectar si el dropdown cabe hacia abajo, si no abrirlo hacia arriba
+    useEffect(() => {
+        if (!open || !containerRef.current) return
+        const rect = containerRef.current.getBoundingClientRect()
+        const spaceBelow = window.innerHeight - rect.bottom
+        setOpenUp(spaceBelow < 320)
     }, [open])
 
     // Scroll automático al valor seleccionado cuando se abre
@@ -80,7 +180,11 @@ export function TimePicker({ value = "", onChange, placeholder = "00:00", label 
 
             {/* Dropdown */}
             {open && (
-                <div className="absolute z-50 mt-1.5 left-0 right-0 bg-white rounded-2xl border border-slate-200 shadow-xl overflow-hidden">
+                <div
+                    ref={dropdownRef}
+                    className={`absolute z-50 left-0 right-0 bg-white rounded-2xl border border-slate-200 shadow-xl overflow-hidden
+                        ${openUp ? "bottom-full mb-1.5" : "top-full mt-1.5"}`}
+                >
 
                     {/* Header */}
                     <div className="grid grid-cols-2 border-b border-slate-100 bg-slate-50/70">
@@ -93,55 +197,23 @@ export function TimePicker({ value = "", onChange, placeholder = "00:00", label 
                     </div>
 
                     {/* Columnas */}
-                    <div className="grid grid-cols-2">
-
-                        {/* Horas */}
-                        <div
-                            ref={horasRef}
-                            className="h-52 overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
-                        >
-                            <div className="py-1">
-                                {HORAS.map(h => (
-                                    <button
-                                        key={h}
-                                        type="button"
-                                        data-h={h}
-                                        onClick={() => seleccionarHora(h)}
-                                        className={`w-full px-4 py-[7px] text-[13px] font-semibold text-center transition-all
-                                            ${hora === h
-                                                ? "bg-[#6E56CF] text-white"
-                                                : "text-slate-600 hover:bg-violet-50 hover:text-[#6E56CF]"
-                                            }`}
-                                    >
-                                        {h}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* Minutos */}
-                        <div
-                            ref={minutosRef}
-                            className="h-52 overflow-y-auto border-l border-slate-100 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
-                        >
-                            <div className="py-1">
-                                {MINUTOS.map(m => (
-                                    <button
-                                        key={m}
-                                        type="button"
-                                        data-m={m}
-                                        onClick={() => seleccionarMinuto(m)}
-                                        className={`w-full px-4 py-[7px] text-[13px] font-semibold text-center transition-all
-                                            ${minuto === m
-                                                ? "bg-[#6E56CF] text-white"
-                                                : "text-slate-600 hover:bg-violet-50 hover:text-[#6E56CF]"
-                                            }`}
-                                    >
-                                        {m}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
+                    <div className="grid grid-cols-2 divide-x divide-slate-100">
+                        <ScrollColumn
+                            items={HORAS}
+                            selected={hora}
+                            onSelect={seleccionarHora}
+                            dataAttr="data-h"
+                            scrollRef={horasRef}
+                            label="Hora"
+                        />
+                        <ScrollColumn
+                            items={MINUTOS}
+                            selected={minuto}
+                            onSelect={seleccionarMinuto}
+                            dataAttr="data-m"
+                            scrollRef={minutosRef}
+                            label="Minuto"
+                        />
                     </div>
 
                     {/* Footer con valor seleccionado */}

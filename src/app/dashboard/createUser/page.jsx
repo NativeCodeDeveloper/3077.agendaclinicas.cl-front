@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { ShieldCheck, UserPlus, BadgeCheck, Mail, Lock } from "lucide-react";
+import { ShieldCheck, UserPlus, BadgeCheck, Mail, Lock, Eye, EyeOff } from "lucide-react";
 import {
   getAssignableDashboardRoles,
   getDashboardRoleDescription,
@@ -35,6 +35,28 @@ function Input({ icon: Icon, ...props }) {
         {...props}
         className="w-full bg-transparent text-[14px] text-slate-900 outline-none placeholder:text-slate-400"
       />
+    </div>
+  );
+}
+
+function PasswordInput({ ...props }) {
+  const [show, setShow] = useState(false);
+  return (
+    <div className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 shadow-sm transition-all focus-within:border-cyan-400 focus-within:ring-4 focus-within:ring-cyan-100">
+      <Lock className="h-4 w-4 shrink-0 text-slate-400" />
+      <input
+        {...props}
+        type={show ? "text" : "password"}
+        className="w-full bg-transparent text-[14px] text-slate-900 outline-none placeholder:text-slate-400"
+      />
+      <button
+        type="button"
+        onClick={() => setShow(prev => !prev)}
+        className="shrink-0 text-slate-400 hover:text-slate-600 transition-colors"
+        tabIndex={-1}
+      >
+        {show ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+      </button>
     </div>
   );
 }
@@ -163,9 +185,7 @@ export default function CreateUserPage() {
 
               <div className="grid gap-5 md:grid-cols-2">
                 <Field label="Contrasena" hint="Minimo 8 caracteres">
-                  <Input
-                    icon={Lock}
-                    type="password"
+                  <PasswordInput
                     value={form.password}
                     onChange={(event) => updateField("password", event.target.value)}
                     placeholder="Ingresa una contrasena segura"
@@ -173,9 +193,7 @@ export default function CreateUserPage() {
                 </Field>
 
                 <Field label="Confirmar contrasena" hint="Debe coincidir con la anterior">
-                  <Input
-                    icon={Lock}
-                    type="password"
+                  <PasswordInput
                     value={form.confirmPassword}
                     onChange={(event) => updateField("confirmPassword", event.target.value)}
                     placeholder="Repite la contrasena"

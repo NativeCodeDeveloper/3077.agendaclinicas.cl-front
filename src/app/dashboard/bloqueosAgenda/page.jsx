@@ -61,6 +61,7 @@ export default function BloqueosAgendas() {
         if (!rangoDesde || !rangoHasta) return toast.error("Debes definir una fecha de inicio y término.");
         if (diasSemanaSeleccionados.length === 0) return toast.error("Selecciona al menos un día de la semana.");
         if (rangoHasta < rangoDesde) return toast.error("La fecha de término debe ser posterior al inicio.");
+        if (rangoHasta > formatearFechaLocal(fechaLimite)) return toast.error(`Solo puedes bloquear hasta 3 meses adelante (${formatearFechaTabla(formatearFechaLocal(fechaLimite))}).`);
 
         // Usar T00:00:00 para crear fechas en hora local (no UTC), evitando desfase de día
         const inicio = new Date(rangoDesde + "T00:00:00");
@@ -192,6 +193,11 @@ export default function BloqueosAgendas() {
             return toast.error("La hora de término debe ser posterior a la hora de inicio.");
         }
 
+        const diasFueraDeRango = diasSeleccionados.filter(d => d > fechaLimite);
+        if (diasFueraDeRango.length > 0) {
+            return toast.error(`${diasFueraDeRango.length} día(s) superan el límite de 3 meses. Máximo hasta ${formatearFechaTabla(formatearFechaLocal(fechaLimite))}.`);
+        }
+
         setCargandoInsercion(true);
         let exitosos = 0;
         let conflictoReserva = 0;
@@ -312,6 +318,10 @@ export default function BloqueosAgendas() {
     const hoy = new Date();
     hoy.setHours(0, 0, 0, 0);
 
+    // Límite: máximo 3 meses hacia adelante (ventana deslizante)
+    const fechaLimite = new Date(hoy);
+    fechaLimite.setMonth(fechaLimite.getMonth() + 3);
+
     return (
         <div className="min-h-screen bg-[#FAFAFB] flex flex-col">
             <ToasterClient />
@@ -394,6 +404,7 @@ export default function BloqueosAgendas() {
                                                     type="date"
                                                     value={rangoDesde}
                                                     min={formatearFechaLocal(hoy)}
+                                                    max={formatearFechaLocal(fechaLimite)}
                                                     onChange={e => setRangoDesde(e.target.value)}
                                                     className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-[13px] font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#6E56CF]/30 focus:border-[#6E56CF] transition-all"
                                                 />
@@ -404,6 +415,7 @@ export default function BloqueosAgendas() {
                                                     type="date"
                                                     value={rangoHasta}
                                                     min={rangoDesde || formatearFechaLocal(hoy)}
+                                                    max={formatearFechaLocal(fechaLimite)}
                                                     onChange={e => setRangoHasta(e.target.value)}
                                                     className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-[13px] font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#6E56CF]/30 focus:border-[#6E56CF] transition-all"
                                                 />
@@ -446,7 +458,7 @@ export default function BloqueosAgendas() {
                                         selected={diasSeleccionados}
                                         onSelect={(days) => setDiasSeleccionados(days ?? [])}
                                         locale={es}
-                                        disabled={{ before: hoy }}
+                                        disabled={[{ before: hoy }, { after: fechaLimite }]}
                                         className="rounded-xl"
                                     />
                                 </div>
@@ -488,6 +500,19 @@ export default function BloqueosAgendas() {
                                                 ))}
                                         </div>
                                     )}
+
+                                {/* Aviso límite de 3 meses */}
+                                <div className="flex items-start gap-3 rounded-2xl bg-slate-50 border border-slate-200/80 px-4 py-3.5">
+                                    <div className="mt-0.5 h-4 w-4 shrink-0 rounded-full bg-slate-300/60 flex items-center justify-center">
+                                        <span className="text-[9px] font-black text-slate-500 leading-none select-none">i</span>
+                                    </div>
+                                    <p className="text-[11px] text-slate-400 leading-relaxed">
+                                        Límite de bloqueo:{" "}
+                                        <span className="font-semibold text-slate-600">{formatearFechaTabla(formatearFechaLocal(fechaLimite))}</span>
+                                        <span className="mx-1.5 text-slate-300">·</span>
+                                        La ventana de 3 meses avanza automáticamente.
+                                    </p>
+                                </div>
 
                                 {/* Rango horario */}
                                 <div className="space-y-2">

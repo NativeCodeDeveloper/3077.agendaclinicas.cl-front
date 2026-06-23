@@ -40,6 +40,9 @@ export default function Dashboard() {
 
     //FUNCION PARA INSERTAR NUEVOS PRODUCTOS
     async function insertarProducto(tituloProducto, descripcionProducto, valorProducto, categoriaProducto, subcategoria, subsubcategoria) {
+        if (!tituloProducto || !descripcionProducto || !valorProducto || !categoriaProducto) {
+            return toast.error("Completa los campos obligatorios: Categoría, Valor, Nombre y Descripción.");
+        }
         try {
             const res = await fetch(`${API}/producto/insertarProducto`,{
                 method: "POST",
@@ -54,8 +57,8 @@ export default function Dashboard() {
                     valorProducto,
                     valor_previo: 1,
                     categoriaProducto,
-                    subcategoria,
-                    subsubcategoria,
+                    subcategoria: subcategoria || 0,
+                    subsubcategoria: subsubcategoria || 0,
                     imagenProducto : `NO APLICA`,
                     imagenProductoSegunda : `NO APLICA`,
                     imagenProductoTercera : `NO APLICA`,
@@ -236,16 +239,8 @@ useEffect(() => {
         subsubcategoria,
         id_producto) {
         try {
-            if (
-                !tituloProducto ||
-                !descripcionProducto ||
-                !valorProducto ||
-                !categoriaProducto ||
-                !subcategorias ||
-                !subsubcategoria ||
-                !id_producto
-            ) {
-                return toast.error("Faltan Datos. Complete toda la informacion para poder actualizar");
+            if (!tituloProducto || !descripcionProducto || !valorProducto || !categoriaProducto || !id_producto) {
+                return toast.error("Faltan Datos. Completa Categoría, Valor, Nombre y Descripción para actualizar.");
             }
             const res = await fetch(`${API}/producto/actualizarProducto`, {
                 method: 'POST',
@@ -258,8 +253,8 @@ useEffect(() => {
                     valorProducto,
                     valor_previo : 1,
                     categoriaProducto,
-                    subcategoria,
-                    subsubcategoria,
+                    subcategoria: subcategoria || 0,
+                    subsubcategoria: subsubcategoria || 0,
                     imagenProducto: "NO APLICA",
                     imagenProductoSegunda: "NO APLICA",
                     imagenProductoTercera: "NO APLICA",
@@ -479,17 +474,19 @@ useEffect(() => {
                                 </select>
                             </div>
 
-                            {/* Subcategoria */}
+                            {/* Subcategoria — opcional */}
                             <div>
                                 <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 mb-1.5">
                                     Sub-Categoria
+                                    <span className="ml-1.5 normal-case font-normal text-slate-400">(opcional)</span>
                                 </label>
                                 <select
                                     value={subcategorias}
                                     onChange={(e) => setsubcategorias(e.target.value)}
-                                    className="w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-700 shadow-sm outline-none transition duration-200 focus:border-[#6E56CF] focus:ring-2 focus:ring-violet-100 hover:border-slate-300 cursor-pointer placeholder:text-slate-400"
+                                    disabled={!categoriaProducto}
+                                    className="w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-700 shadow-sm outline-none transition duration-200 focus:border-[#6E56CF] focus:ring-2 focus:ring-violet-100 hover:border-slate-300 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
                                 >
-                                    <option value="" disabled>Seleccione</option>
+                                    <option value="">Sin subcategoría</option>
                                     {listaSubcategorias.map((subcategoria) => (
                                         <option key={subcategoria.id_subcategoria} value={subcategoria.id_subcategoria}>
                                             {subcategoria.descripcionCategoria}
@@ -498,17 +495,19 @@ useEffect(() => {
                                 </select>
                             </div>
 
-                            {/* Sub-subcategoria */}
+                            {/* Sub-subcategoria — opcional, solo si hay subcategoria */}
                             <div>
                                 <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 mb-1.5">
                                     Sub-Sub Categoria
+                                    <span className="ml-1.5 normal-case font-normal text-slate-400">(opcional)</span>
                                 </label>
                                 <select
                                     value={subsubcategorias}
                                     onChange={(e) => setsubsubcategorias(e.target.value)}
-                                    className="w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-700 shadow-sm outline-none transition duration-200 focus:border-[#6E56CF] focus:ring-2 focus:ring-violet-100 hover:border-slate-300 cursor-pointer placeholder:text-slate-400"
+                                    disabled={!subcategorias}
+                                    className="w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-700 shadow-sm outline-none transition duration-200 focus:border-[#6E56CF] focus:ring-2 focus:ring-violet-100 hover:border-slate-300 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
                                 >
-                                    <option value="" disabled>Seleccione</option>
+                                    <option value="">Sin sub-subcategoría</option>
                                     {listaSubSubCategorias.map((subsubcategoria) => (
                                         <option key={subsubcategoria.id_subsubcategoria} value={subsubcategoria.id_subsubcategoria}>
                                             {subsubcategoria.descripcionSubSubCategoria}

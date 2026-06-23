@@ -1,6 +1,6 @@
 "use client"
 
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {toast, Toaster} from "react-hot-toast";
 import {InfoButton} from "@/Componentes/InfoButton";
 
@@ -22,6 +22,7 @@ export default function Publicaciones() {
     const [newFile, setNewFile] = useState(null);
     const [newPreview, setNewPreview] = useState(null);
     const [isInserting, setIsInserting] = useState(false);
+    const previewUrlRef = useRef(null);
     const [descripcionPublicaciones, setDescripcionPublicaciones] = useState("");
     const [listaPublicaciones, setListaPublicaciones] = useState([]);
     const [id_publicaciones, setId_publicaciones] = useState("");
@@ -205,11 +206,12 @@ export default function Publicaciones() {
         listarPublicaciones();
     }, []);
 
+    // Limpiar blob URL solo al desmontar el componente
     useEffect(() => {
         return () => {
-            if (newPreview) URL.revokeObjectURL(newPreview);
+            if (previewUrlRef.current) URL.revokeObjectURL(previewUrlRef.current);
         };
-    }, [newPreview]);
+    }, []);
 
     async function insertarPublicacion(
         descripcionPublicaciones,
@@ -276,8 +278,11 @@ export default function Publicaciones() {
         const selectedFile = event.target.files?.[0] || null;
         setNewFile(selectedFile);
 
-        if (newPreview) URL.revokeObjectURL(newPreview);
-        setNewPreview(selectedFile ? URL.createObjectURL(selectedFile) : null);
+        // Revocar el URL anterior antes de crear uno nuevo
+        if (previewUrlRef.current) URL.revokeObjectURL(previewUrlRef.current);
+        const newUrl = selectedFile ? URL.createObjectURL(selectedFile) : null;
+        previewUrlRef.current = newUrl;
+        setNewPreview(newUrl);
     }
 
     async function handleUpdateSubmit(event) {
@@ -308,6 +313,7 @@ export default function Publicaciones() {
             setDescripcionPublicaciones("");
             setId_publicaciones("");
             toast.success("Publicacion actualizada correctamente.");
+            setTimeout(() => listarPublicaciones(), 2500);
         } catch (error) {
             toast.error(error?.message || "No fue posible actualizar la publicacion.");
         } finally {
@@ -329,11 +335,13 @@ export default function Publicaciones() {
             await listarPublicaciones();
             setNewDescripcion("");
             setNewFile(null);
-            if (newPreview) {
-                URL.revokeObjectURL(newPreview);
-                setNewPreview(null);
+            if (previewUrlRef.current) {
+                URL.revokeObjectURL(previewUrlRef.current);
+                previewUrlRef.current = null;
             }
+            setNewPreview(null);
             toast.success("Publicacion insertada correctamente.");
+            setTimeout(() => listarPublicaciones(), 2500);
         } catch (error) {
             toast.error(error?.message || "Error al insertar publicacion.");
         } finally {

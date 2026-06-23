@@ -31,6 +31,7 @@ export default function PublicacionesTituloDescripcion() {
     const [cargandoGuardado, setCargandoGuardado] = useState(false);
     const [publicacionEditando, setPublicacionEditando] = useState(null);
     const formularioRef = useRef(null);
+    const vistaPreviaRef = useRef(null);
 
     async function seleccionarPublicacionesTituloDetalle() {
         try {
@@ -55,13 +56,12 @@ export default function PublicacionesTituloDescripcion() {
         seleccionarPublicacionesTituloDetalle();
     }, []);
 
+    // Limpiar blob URL solo al desmontar el componente
     useEffect(() => {
         return () => {
-            if (vistaPreviaLocal) {
-                URL.revokeObjectURL(vistaPreviaLocal);
-            }
+            if (vistaPreviaRef.current) URL.revokeObjectURL(vistaPreviaRef.current);
         };
-    }, [vistaPreviaLocal]);
+    }, []);
 
     async function seleccionarPublicacionesTituloDetallePorID(id_publicacionesTituloDescripcion) {
         try {
@@ -90,18 +90,14 @@ export default function PublicacionesTituloDescripcion() {
     function capturarImagen(event) {
         const file = event.target.files?.[0] ?? null;
 
-        if (vistaPreviaLocal) {
-            URL.revokeObjectURL(vistaPreviaLocal);
-        }
+        if (vistaPreviaRef.current) URL.revokeObjectURL(vistaPreviaRef.current);
 
         setImagenArchivo(file);
         setImageIdSubida("");
 
-        if (file) {
-            setVistaPreviaLocal(URL.createObjectURL(file));
-        } else {
-            setVistaPreviaLocal(null);
-        }
+        const newUrl = file ? URL.createObjectURL(file) : null;
+        vistaPreviaRef.current = newUrl;
+        setVistaPreviaLocal(newUrl);
     }
 
     async function insertarPublicacionesTituloDetalle(imagenId) {
@@ -152,7 +148,10 @@ export default function PublicacionesTituloDescripcion() {
             setImageIdSubida(imagenId);
             await insertarPublicacionesTituloDetalle(imagenId);
             await seleccionarPublicacionesTituloDetalle();
+            limpiarFormulario();
             toast.success("Publicación guardada correctamente.");
+            // Segunda recarga con delay para que Cloudflare termine de procesar la imagen
+            setTimeout(() => seleccionarPublicacionesTituloDetalle(), 2500);
         } catch (error) {
             toast.error(error?.message || "No fue posible guardar la publicación.");
         } finally {
@@ -167,9 +166,8 @@ export default function PublicacionesTituloDescripcion() {
         setImageIdSubida("");
         setPublicacionEditando(null);
 
-        if (vistaPreviaLocal) {
-            URL.revokeObjectURL(vistaPreviaLocal);
-        }
+        if (vistaPreviaRef.current) URL.revokeObjectURL(vistaPreviaRef.current);
+        vistaPreviaRef.current = null;
         setVistaPreviaLocal(null);
     }
 
@@ -180,9 +178,8 @@ export default function PublicacionesTituloDescripcion() {
         setImagenArchivo(null);
         setImageIdSubida("");
 
-        if (vistaPreviaLocal) {
-            URL.revokeObjectURL(vistaPreviaLocal);
-        }
+        if (vistaPreviaRef.current) URL.revokeObjectURL(vistaPreviaRef.current);
+        vistaPreviaRef.current = null;
         setVistaPreviaLocal(null);
 
         formularioRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -234,6 +231,7 @@ export default function PublicacionesTituloDescripcion() {
             limpiarFormulario();
             setDataPublicacionesEspecifica([]);
             toast.success("Publicacion actualizada correctamente.");
+            setTimeout(() => seleccionarPublicacionesTituloDetalle(), 2500);
         } catch (error) {
             toast.error(error?.message || "No fue posible actualizar la publicacion.");
         } finally {

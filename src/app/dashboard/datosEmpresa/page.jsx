@@ -103,28 +103,9 @@ export default function DatosEmpresa() {
     }, []);
 
     async function guardarDatosEmpresa() {
-        if (
-            !empresaNombre ||
-            !contactoTelefono ||
-            !contactoWhatsapp ||
-            !contactoEmail ||
-            !contactoDireccion ||
-            !contactoUrlMapa ||
-            !sobreNosotrosTitulo ||
-            !sobreNosotrosParrafo1 ||
-            !sobreNosotrosParrafo2 ||
-            !socialInstagramUrl ||
-            !socialInstagramHandle ||
-            !socialFacebookUrl ||
-            !socialTwitterUrl ||
-            !socialLinkedinUrl ||
-            !socialTiktokUrl ||
-            !socialYoutubeUrl ||
-            !socialOtraUrl ||
-            !socialOtraEtiqueta ||
-            !id_empresa
-        ) {
-            toast.error("Completa todos los campos antes de guardar.");
+        // Solo los campos esenciales son obligatorios — las redes sociales son opcionales
+        if (!empresaNombre || !contactoTelefono || !contactoEmail || !id_empresa) {
+            toast.error("Completa los campos obligatorios: nombre de empresa, teléfono y email.");
             return;
         }
 
@@ -337,16 +318,12 @@ export default function DatosEmpresa() {
                 <div className="rounded-[24px] border border-slate-200 bg-white p-6 shadow-sm">
                     <div className="flex flex-col gap-5">
                         <div className="space-y-1">
-                            <h2 className="text-base font-semibold text-slate-900">Redes sociales</h2>
+                            <div className="flex items-center gap-2">
+                                <h2 className="text-base font-semibold text-slate-900">Redes sociales</h2>
+                                <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-[11px] font-medium text-slate-400">opcionales</span>
+                            </div>
                             <p className="text-sm text-slate-500">
-                                {/* CONEXIÓN: Las redes sociales se consumen en múltiples lugares:
-                                    - src/lib/publicContact.js → objeto publicContact.socials (fuente central)
-                                    - src/app/(public)/portada/page.jsx → íconos del Hero (actualmente hardcodeados con href="#", deben reemplazarse con estos valores)
-                                    - src/Componentes/Footer.jsx → íconos y enlaces en el footer
-                                    - src/Componentes/FlotanteInstagram.jsx → botón flotante de Instagram
-                                    - src/app/(public)/contacto/page.jsx → lista de redes en página de contacto
-                                    REGLA: Si el campo URL está vacío, el ícono NO aparece en ningún componente */}
-                                Solo aparecen los íconos de las redes que tengan una URL ingresada.
+                                Ingresa solo las redes que uses. Las que queden vacías no aparecerán en la página web.
                             </p>
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
