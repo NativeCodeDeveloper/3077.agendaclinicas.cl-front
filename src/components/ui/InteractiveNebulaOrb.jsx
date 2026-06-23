@@ -20,6 +20,7 @@ uniform float iTime;
 uniform int iFrame;
 uniform vec4 iMouse;
 uniform float iThinking;
+uniform float iThinkingProgress;
 uniform float iRelease;
 
 void mainImage(out vec4 outputColor, in vec2 fragCoord) {
@@ -58,7 +59,7 @@ void mainImage(out vec4 outputColor, in vec2 fragCoord) {
   vec3 color = mix(deepBlue, intenseViolet, flow);
   color += luminousPurple * source.g * 0.72;
   color += softCyan * source.b * 0.58;
-  color = color / (1.0 + color * 0.35);
+  color = color / (1.0 + color * 0.28);
 
   vec2 centered = (fragCoord - resolution * 0.5) / min(resolution.x, resolution.y);
   float radialDistance = length(centered);
@@ -70,34 +71,50 @@ void mainImage(out vec4 outputColor, in vec2 fragCoord) {
   color += rimColor * innerRim * 0.18;
   alpha = max(alpha, innerRim * 0.18);
 
-  vec3 inputIndigo = vec3(0.25, 0.18, 0.71);
-  vec3 inputMagenta = vec3(0.81, 0.19, 0.67);
-  vec3 inputViolet = vec3(0.49, 0.23, 0.93);
-  vec3 inputCyan = vec3(0.13, 0.83, 0.93);
-  vec3 electricHighlight = vec3(0.72, 1.0, 0.98);
+  vec3 inputIndigo = vec3(0.2, 0.12, 0.86);
+  vec3 inputMagenta = vec3(0.95, 0.12, 0.78);
+  vec3 inputViolet = vec3(0.55, 0.18, 1.0);
+  vec3 inputCyan = vec3(0.0, 0.9, 1.0);
+  vec3 thinkingBlue = vec3(0.0, 0.52, 1.0);
+  vec3 thinkingViolet = vec3(0.62, 0.18, 1.0);
+  vec3 thinkingRed = vec3(1.0, 0.08, 0.28);
+  vec3 electricHighlight = vec3(0.76, 1.0, 1.0);
   float thinkingBreath = 0.84
     + 0.1 * sin(time * 4.7)
     + 0.06 * sin(time * 7.9 + 1.2);
+  float thinkingTime = time * mix(1.0, 1.45, iThinking);
   float angle = atan(centered.y, centered.x);
   float energySweep = pow(
-    max(0.0, sin(angle * 2.5 - time * 3.2 + radialDistance * 7.0)),
+    max(0.0, sin(angle * 2.5 - thinkingTime * 4.45 + radialDistance * 7.0)),
     10.0
   );
   float neuralShimmer = pow(
-    max(0.0, sin(time * 6.4 + source.g * 10.0 + angle * 1.5)),
+    max(0.0, sin(thinkingTime * 8.1 + source.g * 10.0 + angle * 1.5)),
     12.0
   );
-  float paletteFlowA = 0.5 + 0.5 * sin(angle * 1.8 + time * 1.4 + source.r * 3.0);
-  float paletteFlowB = 0.5 + 0.5 * sin(angle * 3.1 - time * 1.9 + source.b * 2.0);
+  float paletteFlowA = 0.5 + 0.5 * sin(angle * 1.8 + thinkingTime * 2.1 + source.r * 3.0);
+  float paletteFlowB = 0.5 + 0.5 * sin(angle * 3.1 - thinkingTime * 2.6 + source.b * 2.0);
   vec3 purpleBand = mix(inputIndigo, inputMagenta, paletteFlowA);
   vec3 cyanBand = mix(inputViolet, inputCyan, 1.0 - paletteFlowA);
-  vec3 thinkingColor = mix(purpleBand, cyanBand, 0.5 + 0.32 * sin(angle * 2.4 - time));
-  vec3 thinkingHighlight = mix(electricHighlight, inputMagenta, paletteFlowB * 0.58);
-  vec3 illuminatedThinkingColor = thinkingColor * thinkingBreath * (0.78 + strength * 0.58);
-  color = mix(color, illuminatedThinkingColor, iThinking * 0.74);
-  color += thinkingHighlight * energySweep * strength * iThinking * 0.32;
-  color += thinkingHighlight * neuralShimmer * iThinking * 0.15;
-  color += thinkingColor * innerRim * iThinking * 0.36;
+  float thinkingProgress = smoothstep(0.0, 1.0, clamp(iThinkingProgress, 0.0, 1.0));
+  float violetBlend = smoothstep(0.08, 0.72, thinkingProgress);
+  float redBlend = smoothstep(0.78, 1.0, thinkingProgress);
+  vec3 thinkingSequence = mix(thinkingBlue, thinkingViolet, violetBlend);
+  thinkingSequence = mix(thinkingSequence, thinkingRed, redBlend);
+  vec3 thinkingColor = mix(
+    thinkingSequence,
+    mix(purpleBand, cyanBand, 0.5 + 0.32 * sin(angle * 2.4 - thinkingTime * 1.25)),
+    0.14
+  );
+  vec3 thinkingHighlight = mix(electricHighlight, thinkingSequence, 0.24 + paletteFlowB * 0.42);
+  float glassGlow = smoothstep(0.08, 0.74, strength);
+  vec3 illuminatedThinkingColor = thinkingColor * thinkingBreath * (0.92 + strength * 0.68);
+  color = mix(color, illuminatedThinkingColor, iThinking * 0.82);
+  color += thinkingHighlight * energySweep * strength * iThinking * 0.42;
+  color += thinkingHighlight * neuralShimmer * iThinking * 0.22;
+  color += thinkingColor * innerRim * iThinking * (0.44 + glassGlow * 0.18);
+  color = mix(color, normalize(max(color, vec3(0.001))) * length(color), iThinking * 0.12);
+  color = min(color * (1.0 + iThinking * 0.12), vec3(1.18));
   alpha = max(alpha, circle * iThinking * (0.48 + thinkingBreath * 0.18));
 
   vec3 releasePurple = vec3(0.72, 0.08, 1.0);
@@ -164,16 +181,23 @@ function createProgram(gl) {
   return program;
 }
 
-export function InteractiveNebulaOrb({ className = "", pixelRatio = 1.25, isThinking = false }) {
+export function InteractiveNebulaOrb({ className = "", pixelRatio = 2, isThinking = false }) {
   const canvasRef = useRef(null);
   const thinkingRef = useRef(isThinking);
   const wasThinkingRef = useRef(isThinking);
+  const thinkingStartedAtRef = useRef(
+    isThinking && typeof performance !== "undefined" ? performance.now() : null,
+  );
   const releaseStartedAtRef = useRef(null);
 
   useEffect(() => {
     if (wasThinkingRef.current && !isThinking) {
       releaseStartedAtRef.current = performance.now();
+      thinkingStartedAtRef.current = null;
     } else if (isThinking) {
+      if (!wasThinkingRef.current) {
+        thinkingStartedAtRef.current = performance.now();
+      }
       releaseStartedAtRef.current = null;
     }
 
@@ -219,6 +243,7 @@ export function InteractiveNebulaOrb({ className = "", pixelRatio = 1.25, isThin
     const frameUniform = gl.getUniformLocation(program, "iFrame");
     const mouseUniform = gl.getUniformLocation(program, "iMouse");
     const thinkingUniform = gl.getUniformLocation(program, "iThinking");
+    const thinkingProgressUniform = gl.getUniformLocation(program, "iThinkingProgress");
     const releaseUniform = gl.getUniformLocation(program, "iRelease");
     const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
     const startTime = performance.now();
@@ -229,7 +254,7 @@ export function InteractiveNebulaOrb({ className = "", pixelRatio = 1.25, isThin
     let releaseMix = 0;
 
     const resize = () => {
-      const dpr = Math.max(1, Math.min(1.5, pixelRatio));
+      const dpr = Math.max(1, Math.min(2.5, pixelRatio));
       const width = Math.max(1, Math.floor(canvas.clientWidth * dpr));
       const height = Math.max(1, Math.floor(canvas.clientHeight * dpr));
 
@@ -255,13 +280,19 @@ export function InteractiveNebulaOrb({ className = "", pixelRatio = 1.25, isThin
         if (mouseUniform !== null) gl.uniform4f(mouseUniform, 0, 0, 0, 0);
         thinkingMix += ((thinkingRef.current ? 1 : 0) - thinkingMix) * 0.12;
         if (thinkingUniform !== null) gl.uniform1f(thinkingUniform, thinkingMix);
+        if (thinkingProgressUniform !== null) {
+          const startedAt = thinkingStartedAtRef.current;
+          const progress = startedAt === null ? 0 : Math.min((now - startedAt) / 1200, 1);
+          gl.uniform1f(thinkingProgressUniform, progress);
+        }
         if (releaseStartedAtRef.current !== null) {
-          const releaseProgress = Math.min((now - releaseStartedAtRef.current) / 1100, 1);
-          releaseMix = Math.sin(releaseProgress * Math.PI);
+          const releaseProgress = Math.min((now - releaseStartedAtRef.current) / 1700, 1);
+          const easedReleaseProgress = releaseProgress * releaseProgress * (3.0 - 2.0 * releaseProgress);
+          releaseMix = Math.sin(easedReleaseProgress * Math.PI);
 
           if (releaseProgress >= 1) releaseStartedAtRef.current = null;
         } else {
-          releaseMix += (0 - releaseMix) * 0.18;
+          releaseMix += (0 - releaseMix) * 0.12;
         }
         if (releaseUniform !== null) gl.uniform1f(releaseUniform, releaseMix);
 
@@ -303,7 +334,7 @@ export function InteractiveNebulaOrb({ className = "", pixelRatio = 1.25, isThin
       role="img"
       aria-label={isThinking ? "CORTEX A.I está pensando" : "Orbe animado de CORTEX A.I"}
     >
-      <canvas ref={canvasRef} className="absolute inset-0 block h-full w-full" aria-hidden="true" />
+      <canvas ref={canvasRef} className="absolute inset-0 block h-full w-full [image-rendering:auto]" aria-hidden="true" />
     </div>
   );
 }

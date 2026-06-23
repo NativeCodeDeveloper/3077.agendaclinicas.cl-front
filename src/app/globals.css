@@ -283,6 +283,71 @@ html {
   animation-duration: 2.8s;
 }
 
+@keyframes cortex-heartbeat-draw {
+  0% {
+    stroke-dashoffset: 260;
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    stroke-dashoffset: -260;
+    opacity: 1;
+  }
+}
+
+.cortex-heartbeat-line {
+  stroke: #22d3ee;
+  stroke-width: 1.1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 2 258;
+  stroke-dashoffset: 260;
+  filter:
+    drop-shadow(0 0 4px rgba(34, 211, 238, 1))
+    drop-shadow(0 0 12px rgba(34, 211, 238, 0.72));
+  animation: cortex-heartbeat-draw 4.6s cubic-bezier(0.45, 0, 0.2, 1) infinite;
+}
+
+.cortex-heartbeat-trail {
+  stroke: rgba(34, 211, 238, 0.72);
+  stroke-width: 1.1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 82 178;
+  stroke-dashoffset: 260;
+  filter:
+    drop-shadow(0 0 3px rgba(34, 211, 238, 0.62))
+    drop-shadow(0 0 9px rgba(34, 211, 238, 0.28));
+  animation: cortex-heartbeat-draw 4.6s cubic-bezier(0.45, 0, 0.2, 1) infinite;
+}
+
+@keyframes cortex-synapse-flicker {
+  0%,
+  100% {
+    opacity: 0.34;
+    filter: drop-shadow(0 0 2px rgba(34, 211, 238, 0.28));
+  }
+
+  42% {
+    opacity: 1;
+    filter:
+      drop-shadow(0 0 3px rgba(34, 211, 238, 0.82))
+      drop-shadow(0 0 9px rgba(34, 211, 238, 0.36));
+  }
+}
+
+.cortex-synapse-word {
+  fill: #a5f3fc;
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  animation: cortex-synapse-flicker 3.5s ease-in-out infinite;
+}
+
 /* MICRO ANIMATIONS FOR MINIMALIST ICONS */
 @keyframes icon-beat {
 
