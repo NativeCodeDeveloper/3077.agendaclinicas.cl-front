@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { Michroma } from "next/font/google";
-import { Send, X } from "lucide-react";
+import { Minus, Send, X } from "lucide-react";
 
 const InteractiveNebulaOrb = dynamic(
   () => import("@/components/ui/InteractiveNebulaOrb").then((module) => module.InteractiveNebulaOrb),
@@ -126,14 +126,24 @@ export default function CortexAssistant() {
                 </div>
               </div>
 
-              <button
-                type="button"
-                onClick={() => setIsOpen(false)}
-                aria-label="Cerrar CORTEX A.I"
-                className="grid h-8 w-8 place-items-center rounded-lg text-slate-300 transition hover:bg-slate-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-violet-400"
-              >
-                <X className="h-4 w-4" />
-              </button>
+              <div className="flex items-center gap-1">
+                <button
+                  type="button"
+                  onClick={() => setIsOpen(false)}
+                  aria-label="Minimizar CORTEX A.I"
+                  className="grid h-8 w-8 place-items-center rounded-lg text-slate-300 transition hover:bg-slate-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-violet-400"
+                >
+                  <Minus className="h-4 w-4" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setIsOpen(false)}
+                  aria-label="Cerrar CORTEX A.I"
+                  className="grid h-8 w-8 place-items-center rounded-lg text-slate-300 transition hover:bg-slate-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-violet-400"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
             </header>
 
             <div
@@ -264,7 +274,7 @@ export default function CortexAssistant() {
             className="pointer-events-auto rounded-full bg-transparent p-0 shadow-none transition hover:scale-105 focus:outline-none focus:ring-4 focus:ring-violet-200/60"
           >
             <span className="relative block h-16 w-16 overflow-hidden rounded-full bg-transparent">
-              <InteractiveNebulaOrb className="h-full w-full" />
+              <InteractiveNebulaOrb isThinking={isEvolving} className="h-full w-full" />
             </span>
           </button>
         )}
