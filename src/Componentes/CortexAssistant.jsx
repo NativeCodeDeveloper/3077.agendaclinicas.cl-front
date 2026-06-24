@@ -101,7 +101,7 @@ export default function CortexAssistant() {
           >
             <header className="flex items-center justify-between border-b border-white/[0.06] px-4 py-3.5">
               <div className="flex items-center gap-3">
-                <div className="relative h-14 w-14 overflow-hidden rounded-2xl bg-[#28282a]">
+                <div className="relative h-14 w-14 overflow-hidden rounded-full bg-transparent">
                   <InteractiveNebulaOrb
                     isThinking={isEvolving}
                     className="absolute inset-0 h-full w-full rounded-full"
@@ -148,14 +148,14 @@ export default function CortexAssistant() {
               aria-live="polite"
               className="flex-1 space-y-3 overflow-y-auto bg-black/20 px-4 py-5"
             >
-              <div className="max-w-[86%] rounded-2xl rounded-tl-sm border border-white/[0.08] bg-white/[0.07] px-4 py-3 text-[13px] leading-relaxed text-white/80 shadow-sm">
+              <div className="max-w-[86%] break-words rounded-2xl rounded-tl-sm border border-white/[0.08] bg-white/[0.07] px-4 py-3 text-[13px] leading-relaxed text-white/80 shadow-sm">
                 Hola, soy el agente de IA de AgendaClínica. Haré todo el trabajo por ti, solo pídemelo.
               </div>
 
               {mockConversation.map((item, index) => (
                 <div
                   key={`${item.role}-${index}`}
-                  className={`w-fit max-w-[86%] rounded-2xl px-4 py-3 text-[13px] leading-relaxed shadow-sm ${
+                  className={`w-fit max-w-[86%] break-words rounded-2xl px-4 py-3 text-[13px] leading-relaxed shadow-sm ${
                     item.role === "user"
                       ? "ml-auto rounded-tr-sm border border-violet-900/30 bg-[#21183D] text-white"
                       : "rounded-tl-sm border border-white/[0.08] bg-white/[0.07] text-white/80"
