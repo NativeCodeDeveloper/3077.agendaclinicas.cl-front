@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
-import { Michroma } from "next/font/google";
 import { Minus, Send, X } from "lucide-react";
 
 const InteractiveNebulaOrb = dynamic(
@@ -13,7 +12,6 @@ const InteractiveNebulaOrb = dynamic(
   },
 );
 
-const michroma = Michroma({ weight: "400", subsets: ["latin"], display: "swap" });
 const MAX_CHARS = 2000;
 const THINKING_LABELS = [
   "haciendo sinapsis...",
@@ -99,13 +97,9 @@ export default function CortexAssistant() {
             role="dialog"
             aria-modal="false"
             aria-labelledby="cortex-assistant-title"
-            className="pointer-events-auto flex h-[min(460px,calc(100vh-96px))] w-[calc(100vw-32px)] flex-col overflow-hidden rounded-2xl border border-slate-700 bg-[#111827] shadow-[0_18px_50px_-18px_rgba(15,23,42,0.55)] sm:w-[360px]"
-            style={{ backgroundColor: "#111827" }}
+            className="pointer-events-auto flex h-[min(460px,calc(100vh-96px))] w-[calc(100vw-32px)] flex-col overflow-hidden rounded-2xl border border-white/[0.07] bg-[#28282a]/95 shadow-[0_32px_72px_-12px_rgba(0,0,0,0.85)] backdrop-blur-2xl sm:w-[360px]"
           >
-            <header
-              className="flex items-center justify-between border-b border-slate-700 px-4 py-3.5"
-              style={{ backgroundColor: "#111827" }}
-            >
+            <header className="flex items-center justify-between border-b border-white/[0.06] px-4 py-3.5">
               <div className="flex items-center gap-3">
                 <div className="relative h-14 w-14 overflow-hidden rounded-2xl bg-transparent">
                   <InteractiveNebulaOrb
@@ -116,16 +110,17 @@ export default function CortexAssistant() {
                 <div>
                   <h2
                     id="cortex-assistant-title"
-                    className={`${michroma.className} relative inline-block text-[12px] font-bold tracking-[0.14em] text-white`}
+                    className="text-[13px] font-bold tracking-[0.18em] text-white antialiased"
+                    style={{ fontFamily: "var(--font-outfit)" }}
                   >
-                    <span className="absolute inset-0 translate-x-[0.55px] text-white" aria-hidden="true">
-                      CORTEX A.I
-                    </span>
-                    <span className="absolute inset-0 -translate-x-[0.55px] text-white" aria-hidden="true">
-                      CORTEX A.I
-                    </span>
-                    <span className="relative text-white">CORTEX A.I</span>
+                    CORTEX A.I
                   </h2>
+                  <p
+                    className="mt-0.5 text-[9px] font-medium uppercase tracking-[0.2em] text-white/30 antialiased"
+                    style={{ fontFamily: "var(--font-outfit)" }}
+                  >
+                    Agente Inteligencia Artificial
+                  </p>
                 </div>
               </div>
 
@@ -134,7 +129,7 @@ export default function CortexAssistant() {
                   type="button"
                   onClick={() => setIsOpen(false)}
                   aria-label="Minimizar CORTEX A.I"
-                  className="grid h-8 w-8 place-items-center rounded-lg text-slate-300 transition hover:bg-slate-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-violet-400"
+                  className="grid h-8 w-8 place-items-center rounded-lg text-white/40 transition hover:bg-white/10 hover:text-white/80 focus:outline-none"
                 >
                   <Minus className="h-4 w-4" />
                 </button>
@@ -142,7 +137,7 @@ export default function CortexAssistant() {
                   type="button"
                   onClick={() => setIsOpen(false)}
                   aria-label="Cerrar CORTEX A.I"
-                  className="grid h-8 w-8 place-items-center rounded-lg text-slate-300 transition hover:bg-slate-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-violet-400"
+                  className="grid h-8 w-8 place-items-center rounded-lg text-white/40 transition hover:bg-white/10 hover:text-white/80 focus:outline-none"
                 >
                   <X className="h-4 w-4" />
                 </button>
@@ -151,33 +146,25 @@ export default function CortexAssistant() {
 
             <div
               aria-live="polite"
-              className="flex-1 space-y-3 overflow-y-auto bg-[#0F172A] px-4 py-5"
-              style={{ backgroundColor: "#0F172A" }}
+              className="flex-1 space-y-3 overflow-y-auto bg-black/20 px-4 py-5"
             >
-              <div
-                className="max-w-[86%] rounded-2xl rounded-tl-sm border border-slate-700 bg-[#1E293B] px-4 py-3 text-[13px] leading-relaxed text-slate-50 shadow-sm [&_*]:text-slate-50"
-                style={{ backgroundColor: "#1E293B", color: "#F8FAFC" }}
-              >
+              <div className="max-w-[86%] rounded-2xl rounded-tl-sm border border-white/[0.08] bg-white/[0.07] px-4 py-3 text-[13px] leading-relaxed text-white/80 shadow-sm">
                 Hola, soy el agente de IA de AgendaClínica. Haré todo el trabajo por ti, solo pídemelo.
               </div>
 
               {mockConversation.map((item, index) => (
                 <div
                   key={`${item.role}-${index}`}
-                  className={`w-fit max-w-[86%] rounded-2xl px-4 py-3 text-[13px] leading-relaxed shadow-sm [&_*]:text-slate-50 ${
+                  className={`w-fit max-w-[86%] rounded-2xl px-4 py-3 text-[13px] leading-relaxed shadow-sm ${
                     item.role === "user"
-                      ? "ml-auto rounded-tr-sm bg-[#21183D] text-white"
-                      : "rounded-tl-sm border border-slate-700 bg-[#1E293B] text-slate-100"
+                      ? "ml-auto rounded-tr-sm border border-violet-900/30 bg-[#21183D] text-white"
+                      : "rounded-tl-sm border border-white/[0.08] bg-white/[0.07] text-white/80"
                   }`}
-                  style={{
-                    backgroundColor: item.role === "user" ? "#21183D" : "#1E293B",
-                    color: "#F8FAFC",
-                  }}
                 >
                   {item.type === "capabilities" ? (
-                    <div className="text-slate-50 [&_*]:text-slate-50" style={{ color: "#F8FAFC" }}>
+                    <div>
                       <p>De momento no estoy disponible en este plan, pero puedo:</p>
-                      <ul className="mt-2.5 space-y-1.5 pl-4 text-left text-slate-50 [list-style-type:disc] marker:text-[#8B5CF6]">
+                      <ul className="mt-2.5 space-y-1.5 pl-4 text-left [list-style-type:disc] marker:text-violet-400">
                         <li>Agendar pacientes por ti.</li>
                         <li>Mejorar la redacción de tus fichas.</li>
                         <li>Realizar bloqueos específicos.</li>
@@ -187,7 +174,7 @@ export default function CortexAssistant() {
                         <li>Generar resúmenes diagnósticos.</li>
                         <li>Y mucho más.</li>
                       </ul>
-                      <p className="mt-3 border-t border-slate-600 pt-3 font-semibold text-slate-50">
+                      <p className="mt-3 border-t border-white/10 pt-3 font-semibold text-white/90">
                         Para usarme, adquiere el plan MAX 🔥 de Agenda Clínica.
                       </p>
                     </div>
@@ -226,16 +213,12 @@ export default function CortexAssistant() {
               <div ref={conversationEndRef} />
             </div>
 
-            <footer
-              className="border-t border-slate-700 bg-[#111827] p-3"
-              style={{ backgroundColor: "#111827" }}
-            >
+            <footer className="border-t border-white/[0.06] p-3">
               <form
                 onSubmit={handleSubmit}
-                className={`cortex-input-aura relative isolate flex items-end gap-2 rounded-xl border border-slate-700 bg-[#0F172A] p-1.5 pl-3 shadow-sm transition ${
+                className={`cortex-input-aura relative isolate flex items-end gap-2 rounded-xl border border-white/[0.08] bg-white/[0.06] p-1.5 pl-3 transition ${
                   isEvolving ? "is-thinking" : ""
                 }`}
-                style={{ backgroundColor: "#0F172A" }}
               >
                 <textarea
                   ref={inputRef}
@@ -252,7 +235,7 @@ export default function CortexAssistant() {
                   rows={1}
                   aria-label="Mensaje para CORTEX A.I"
                   placeholder={isEvolving ? "CORTEX esta respondiendo..." : "Escribe un mensaje..."}
-                  className="max-h-24 min-h-8 flex-1 resize-none bg-transparent py-1.5 text-[13px] leading-5 text-slate-100 outline-none placeholder:text-slate-400"
+                  className="max-h-24 min-h-8 flex-1 resize-none bg-transparent py-1.5 text-[13px] leading-5 text-white/80 outline-none placeholder:text-white/25"
                 />
                 <div className="flex shrink-0 flex-col items-end gap-1.5 pb-0.5">
                   <span
@@ -273,10 +256,10 @@ export default function CortexAssistant() {
                 </div>
               </form>
               <div className="mt-2 flex items-center justify-between px-0.5">
-                <p className="text-[9px] text-slate-600">Shift + Enter para nueva línea</p>
+                <p className="text-[9px] text-white/25">Shift + Enter para nueva línea</p>
                 <div className="flex items-center gap-1.5">
                   <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
-                  <span className="text-[9px] text-slate-600">Todos los sistemas operativos</span>
+                  <span className="text-[9px] text-white/25">Todos los sistemas operativos</span>
                 </div>
               </div>
             </footer>
