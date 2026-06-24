@@ -101,7 +101,7 @@ export default function CortexAssistant() {
           >
             <header className="flex items-center justify-between border-b border-white/[0.06] px-4 py-3.5">
               <div className="flex items-center gap-3">
-                <div className="relative h-14 w-14 overflow-hidden rounded-2xl bg-transparent">
+                <div className="relative h-14 w-14 overflow-hidden rounded-2xl bg-[#28282a]">
                   <InteractiveNebulaOrb
                     isThinking={isEvolving}
                     className="absolute inset-0 h-full w-full rounded-full"

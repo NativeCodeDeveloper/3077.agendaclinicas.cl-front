@@ -342,7 +342,7 @@ html {
 
 .cortex-synapse-word {
   fill: #a5f3fc;
-  font-size: 8px;
+  font-size: 10px;
   font-weight: 600;
   letter-spacing: 0.08em;
   animation: cortex-synapse-flicker 3.5s ease-in-out infinite;
