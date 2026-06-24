@@ -14,6 +14,7 @@ const InteractiveNebulaOrb = dynamic(
 );
 
 const michroma = Michroma({ weight: "400", subsets: ["latin"], display: "swap" });
+const MAX_CHARS = 2000;
 const THINKING_LABELS = [
   "haciendo sinapsis...",
   "propagacion neuronal...",
@@ -72,6 +73,8 @@ export default function CortexAssistant() {
       window.clearTimeout(responseTimer);
     };
   }, [isEvolving]);
+
+  const isNearLimit = message.length > MAX_CHARS * 0.85;
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -237,7 +240,8 @@ export default function CortexAssistant() {
                 <textarea
                   ref={inputRef}
                   value={message}
-                  onChange={(event) => setMessage(event.target.value)}
+                  onChange={(event) => setMessage(event.target.value.slice(0, MAX_CHARS))}
+                  maxLength={MAX_CHARS}
                   disabled={isEvolving}
                   onKeyDown={(event) => {
                     if (event.key === "Enter" && !event.shiftKey) {
@@ -250,18 +254,31 @@ export default function CortexAssistant() {
                   placeholder={isEvolving ? "CORTEX esta respondiendo..." : "Escribe un mensaje..."}
                   className="max-h-24 min-h-8 flex-1 resize-none bg-transparent py-1.5 text-[13px] leading-5 text-slate-100 outline-none placeholder:text-slate-400"
                 />
-                <button
-                  type="submit"
-                  aria-label="Enviar mensaje"
-                  disabled={!message.trim() || isEvolving}
-                  className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-[#21183D] text-white transition hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-300 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400"
-                >
-                  <Send className="h-4 w-4" />
-                </button>
+                <div className="flex shrink-0 flex-col items-end gap-1.5 pb-0.5">
+                  <span
+                    className={`font-mono text-[9px] tabular-nums transition-colors ${
+                      isNearLimit ? "text-amber-400" : "text-slate-600"
+                    }`}
+                  >
+                    {message.length}/{MAX_CHARS}
+                  </span>
+                  <button
+                    type="submit"
+                    aria-label="Enviar mensaje"
+                    disabled={!message.trim() || isEvolving}
+                    className="grid h-9 w-9 place-items-center rounded-lg bg-[#21183D] text-white transition hover:bg-violet-900 focus:outline-none focus:ring-2 focus:ring-violet-500/30 disabled:cursor-not-allowed disabled:bg-slate-700 disabled:text-slate-500"
+                  >
+                    <Send className="h-4 w-4" />
+                  </button>
+                </div>
               </form>
-              <p className="mt-2 text-center text-[9px] text-slate-500">
-                Verifica siempre la información clínica.
-              </p>
+              <div className="mt-2 flex items-center justify-between px-0.5">
+                <p className="text-[9px] text-slate-600">Shift + Enter para nueva línea</p>
+                <div className="flex items-center gap-1.5">
+                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
+                  <span className="text-[9px] text-slate-600">Todos los sistemas operativos</span>
+                </div>
+              </div>
             </footer>
           </section>
         ) : (

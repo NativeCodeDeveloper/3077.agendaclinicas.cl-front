@@ -182,7 +182,7 @@ export default function Portada() {
           </div>
 
           {/* Card solapada derecha */}
-          <div className="bg-white rounded-3xl shadow-2xl shadow-slate-200/60 border border-slate-100 p-8 ml-[-80px] z-10 max-w-xl flex-1">
+          <div className="bg-white rounded-3xl shadow-2xl shadow-slate-200/60 border border-slate-100 p-8 ml-[-40px] z-10 max-w-xl flex-1">
 
             {/* AC badge */}
             <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3.5 py-1.5">
