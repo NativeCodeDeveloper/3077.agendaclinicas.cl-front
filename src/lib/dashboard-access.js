@@ -8,6 +8,7 @@ const DASHBOARD_ROLES = [
   "basico",
   "centro-estetico",
   "clinico-medico",
+  "operador-clinico",
   "odontologico",
   "oftalmologia",
   "agenda",
@@ -127,6 +128,23 @@ const routeMatchersByRole = {
     /^\/dashboard\/recetaRapida$/,
     /^\/dashboard\/examenDocumento$/,
     /^\/dashboard\/examenesClinicos$/,
+  ],
+  "operador-clinico": [
+    /^\/dashboard$/,
+    /^\/dashboard\/no-access$/,
+    /^\/dashboard\/calendario$/,
+    /^\/dashboard\/bloqueosAgenda$/,
+    /^\/dashboard\/AgendaDetalle\/[^/]+$/,
+    /^\/dashboard\/listaPacientes$/,
+    /^\/dashboard\/GestionPaciente$/,
+    /^\/dashboard\/FichaClinica$/,
+    /^\/dashboard\/paciente\/[^/]+$/,
+    /^\/dashboard\/FichasPacientes\/[^/]+$/,
+    /^\/dashboard\/NuevaFicha\/[^/]+$/,
+    /^\/dashboard\/EdicionFicha\/[^/]+$/,
+    /^\/dashboard\/recetaPacientes\/[^/]+$/,
+    /^\/dashboard\/recetaRapida$/,
+    /^\/dashboard\/examenDocumento$/,
   ],
   odontologico: [
     /^\/dashboard$/,
@@ -409,6 +427,10 @@ const DASHBOARD_ROLE_DETAILS = {
     label: "Clinico Medico",
     description: "Puede trabajar fichas, recetas medicas y solicitudes de examenes.",
   },
+  "operador-clinico": {
+    label: "Operador Clinico",
+    description: "Gestiona reservas, agenda, pacientes, fichas, recetas medicas y solicitudes de examenes.",
+  },
   odontologico: {
     label: "Odontologico",
     description: "Incluye flujo clinico con odontograma y catalogo odontologico.",
@@ -536,7 +558,7 @@ function canAccessOdontograma(role) {
 
 function canAccessRecetasEnFicha(role) {
   const normalizedRole = normalizeDashboardRole(role);
-  return hasFullDashboardAccess(role) || ["clinico-medico", "odontologico", "oftalmologia", "agenda"].includes(normalizedRole);
+  return hasFullDashboardAccess(role) || ["clinico-medico", "operador-clinico", "odontologico", "oftalmologia", "agenda"].includes(normalizedRole);
 }
 
 function canAccessFichasClinicas(role) {
